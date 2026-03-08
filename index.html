@@ -19,6 +19,121 @@
 
 <style>
 
+/* Isso garante que o menu mobile NÃO seja afetado pelo status "Em breve" dos produtos */
+.mobile-sidebar {
+    display: flex !important; /* Garante que ele exista no código */
+    visibility: visible;
+    z-index: 99999; /* Valor bem alto para ficar na frente de TUDO */
+}
+
+/* Garante que ele só apareça quando a classe active for adicionada */
+.mobile-sidebar:not(.active) {
+    right: -100%;
+}
+
+/* Botão de abrir (só aparece no celular) */
+.mobile-open-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Overlay Escuro */
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Sidebar (Menu) */
+.mobile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Escondido na direita */
+    width: 280px;
+    height: 100vh;
+    background: #0a0a0b;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 2000;
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-sidebar.active {
+    right: 0; /* Desliza para dentro */
+}
+
+/* Cabeçalho do Menu */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.sidebar-logo {
+    font-weight: 800;
+    background: linear-gradient(90deg, #d946ef, #8b5cf6);
+    background-clip: text; /* Versão padrão para navegadores modernos */
+    -webkit-background-clip: text; /* Versão para Chrome/Safari */
+    -webkit-text-fill-color: transparent;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #71717a;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Links do Menu */
+.sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sidebar-links a {
+    color: #e4e4e7;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.sidebar-links a:hover {
+    background: rgba(139, 92, 246, 0.1);
+    color: #d946ef;
+}
+
+/* Responsividade: Mostrar o botão no mobile */
+@media (max-width: 768px) {
+    .mobile-open-btn {
+        display: block;
+    }
+}
+
 /* Estilo do Botão Flutuante */
 .floating-btn {
   position: fixed;
@@ -1169,6 +1284,34 @@ footer {
 
 <body>
 
+<button class="mobile-open-btn" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+
+<nav class="mobile-sidebar" id="mobileSidebar">
+    <div class="sidebar-header">
+        <span class="sidebar-logo">NOVA</span>
+        <button class="close-btn" onclick="toggleMenu()">✕</button>
+    </div>
+
+    <div class="sidebar-links">
+    <a href="#" onclick="toggleMenu()">
+        <i class="fa-solid fa-house"></i> Início
+    </a>
+    <a href="#" onclick="toggleMenu(); openInfoOverlay('comoComprar');">
+        <i class="fa-solid fa-cart-shopping"></i> Como Comprar
+    </a>
+    <a href="#" onclick="toggleMenu(); openInfoOverlay('termos');">
+        <i class="fa-solid fa-file-contract"></i> Termos
+    </a>
+    <a href="https://discord.gg/Szqbsd4TNa" target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands fa-discord"></i> Discord
+    </a>
+</div>
+</nav>
+
 <nav class="navbar">
   <div class="nav-container">
     <a href="#" class="logo">
@@ -1185,8 +1328,8 @@ footer {
       <a href="#">.</a>
     </div>
 
-    <button class="mobile-menu-btn" onclick="alert('Menu para Mobile em Breve!')">
-      <i class="fa-solid fa-bars"></i>
+    <button class="mobile-menu-btn" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
     </button>
   </div>
 </nav>
@@ -2378,6 +2521,24 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+</script>
+
+<script>
+function toggleMenu() {
+    const sidebar = document.getElementById('mobileSidebar');
+    const overlay = document.getElementById('menuOverlay');
+    
+    // Toggle adiciona a classe se não existir, e remove se já existir
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    
+    // Trava o scroll da página quando o menu abrir
+    if (sidebar.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'auto';
+    }
+}
 </script>
 
 </body>
