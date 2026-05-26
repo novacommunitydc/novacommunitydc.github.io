@@ -3,726 +3,1232 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOVA — Premium Game Services</title>
-<link rel="icon" type="image/png" href="https://media.discordapp.net/attachments/1363677152800800961/1500640598548287618/content.png?ex=69f92bf7&is=69f7da77&hm=f1b661887c119d3b974032db6b8a7ed566e6024894a436272ac51e74412839d1&=&format=webp&quality=lossless&width=788&height=788">
+<title>NOVA ・ Premium Game Services</title>
+<link rel="icon" type="image/png" href="https://media.discordapp.net/attachments/1492257556905857246/1508962267922960535/content.png?ex=6a17721f&is=6a16209f&hm=95e73ec1d342329f3546f8236643d1f7b93eb6afcfe0afa313f4ef201c0ceec1&=&format=webp&quality=lossless">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+/* ═══════════════════ DESIGN TOKENS ═══════════════════ */
 :root {
-  --bg: #080808;
-  --bg1: #0f0f0f;
-  --bg2: #141414;
-  --bg3: #1a1a1a;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --amber: #e8a84c;
-  --amber-dim: rgba(232,168,76,0.12);
-  --amber-glow: rgba(232,168,76,0.25);
-  --text: #f5f5f0;
-  --muted: #555;
-  --dim: #888;
-  --green: #4ade80;
-  --red: #f87171;
-  --r: 6px;
-  --mono: 'JetBrains Mono', sans-serif;
-  --head: 'Bebas Neue', sans-serif;
-  --body: 'Inter', monospace;
+  --bg:       #060608;
+  --bg1:      #0c0c10;
+  --bg2:      #111116;
+  --bg3:      #18181f;
+  --bg4:      #1e1e27;
+  --border:   rgba(255,255,255,0.06);
+  --border2:  rgba(255,255,255,0.11);
+  --border3:  rgba(255,255,255,0.18);
+  --amber:    #e8a84c;
+  --amber2:   #f5c46e;
+  --amber-dim:rgba(232,168,76,0.10);
+  --amber-glow:rgba(232,168,76,0.22);
+  --amber-border:rgba(232,168,76,0.28);
+  --text:     #f0efe8;
+  --text2:    #c8c7be;
+  --muted:    #4a4a58;
+  --dim:      #7a7a8a;
+  --green:    #3ddc84;
+  --green-dim:rgba(61,220,132,0.12);
+  --red:      #f07070;
+  --red-dim:  rgba(240,112,112,0.12);
+  --blue:     #6ea8f5;
+  --purple:   #a78bfa;
+  --r:        8px;
+  --r2:       12px;
+  --mono:     'JetBrains Mono', monospace;
+  --head:     'Bebas Neue', sans-serif;
+  --body:     'Inter', sans-serif;
+  --glass:    rgba(12,12,16,0.75);
+  --glass2:   rgba(24,24,31,0.60);
+  --transition:.22s cubic-bezier(.4,0,.2,1);
+  --glow-amber:0 0 40px rgba(232,168,76,0.18),0 0 80px rgba(232,168,76,0.06);
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body{
+  font-family:var(--body);background:var(--bg);color:var(--text);
+  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
 
 /* scrollbar */
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--amber);border-radius:99px;}
 
-/* scanline removed */
+/* ═══════════════════ ANIMATED BACKGROUND ═══════════════════ */
+.bg-canvas {
+  position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;
+}
+.bg-orb {
+  position:absolute;border-radius:50%;filter:blur(120px);opacity:0.5;
+  animation:orbFloat 20s ease-in-out infinite;
+}
+.bg-orb.o1 {
+  width:600px;height:600px;background:radial-gradient(circle,rgba(232,168,76,0.12),transparent 70%);
+  top:-200px;left:-150px;animation-delay:0s;animation-duration:25s;
+}
+.bg-orb.o2 {
+  width:500px;height:500px;background:radial-gradient(circle,rgba(110,168,245,0.07),transparent 70%);
+  top:30%;right:-200px;animation-delay:-8s;animation-duration:22s;
+}
+.bg-orb.o3 {
+  width:700px;height:700px;background:radial-gradient(circle,rgba(167,139,250,0.06),transparent 70%);
+  bottom:-200px;left:30%;animation-delay:-14s;animation-duration:30s;
+}
+@keyframes orbFloat{
+  0%,100%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(40px,-30px) scale(1.05);}
+  66%{transform:translate(-20px,20px) scale(.97);}
+}
 
-/* ═══════════════════ NAV ═══════════════════ */
-nav{
+/* grid overlay */
+.bg-grid {
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(232,168,76,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(232,168,76,0.03) 1px,transparent 1px);
+  background-size:70px 70px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%);
+}
+
+/* noise texture overlay */
+.bg-noise {
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ═══════════════════ GLASS PANEL SYSTEM ═══════════════════ */
+.glass {
+  background:var(--glass);
+  backdrop-filter:blur(24px) saturate(1.4);
+  -webkit-backdrop-filter:blur(24px) saturate(1.4);
+  border:1px solid var(--border2);
+}
+.glass-deep {
+  background:rgba(6,6,8,0.88);
+  backdrop-filter:blur(40px) saturate(1.6);
+  border:1px solid var(--border);
+}
+.glass-card {
+  background:var(--glass2);
+  backdrop-filter:blur(16px);
+  border:1px solid var(--border);
+  transition:var(--transition);
+}
+.glass-card:hover {
+  background:rgba(24,24,31,0.80);
+  border-color:var(--border2);
+  box-shadow:0 20px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* ═══════════════════ NAVIGATION ═══════════════════ */
+nav {
   position:fixed;top:0;width:100%;z-index:1000;
-  background:rgba(8,8,8,0.9);border-bottom:1px solid var(--border);
-  backdrop-filter:blur(20px);
+  background:rgba(6,6,8,0.88);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(32px) saturate(1.5);
+  transition:var(--transition);
 }
-.nav-inner{
-  max-width:1280px;margin:0 auto;padding:0 2rem;
-  display:flex;align-items:center;justify-content:space-between;height:60px;
+nav.scrolled { box-shadow:0 4px 32px rgba(0,0,0,0.5); }
+.nav-inner {
+  max-width:1320px;margin:0 auto;padding:0 2rem;
+  display:flex;align-items:center;justify-content:space-between;height:58px;gap:1rem;
 }
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.logo img{width:30px;height:30px;border-radius:50%;border:1px solid rgba(232,168,76,0.3);}
-.logo-name{font-family:var(--head);font-size:1rem;font-weight:800;letter-spacing:0.12em;color:var(--text);}
-.logo-name em{font-style:normal;color:var(--amber);}
-.logo-badge{font-family:var(--mono);font-size:0.55rem;color:var(--muted);letter-spacing:0.15em;border:1px solid var(--border);padding:2px 6px;border-radius:3px;margin-left:4px;}
-.nav-links{display:flex;align-items:center;gap:2px;}
-.nav-links a{
-  font-family:var(--mono);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;
-  color:var(--dim);text-decoration:none;padding:6px 14px;border-radius:4px;
-  transition:.2s;border:1px solid transparent;
+.logo {
+  display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;
 }
-.nav-links a:hover{color:var(--text);background:var(--bg2);border-color:var(--border);}
-.btn-discord{
-  display:flex;align-items:center;gap:7px;
-  font-family:var(--mono);font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;
-  background:var(--amber);color:#000;padding:8px 16px;border-radius:4px;text-decoration:none;
-  transition:.2s;font-weight:700;border:1px solid transparent;
+.logo-img {
+  width:28px;height:28px;border-radius:50%;
+  border:1px solid var(--amber-border);
+  box-shadow:0 0 12px var(--amber-glow);
+  transition:var(--transition);
 }
-.btn-discord:hover{background:#f0b85a;transform:translateY(-1px);}
-.hamburger{display:none;background:none;border:1px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:4px;cursor:pointer;font-size:1rem;}
+.logo:hover .logo-img { box-shadow:0 0 20px var(--amber-glow); }
+.logo-name {
+  font-family:var(--head);font-size:.95rem;font-weight:400;letter-spacing:0.14em;color:var(--text);
+}
+.logo-name em { font-style:normal;color:var(--amber); }
+.logo-badge {
+  font-family:var(--mono);font-size:0.5rem;color:var(--muted);letter-spacing:0.18em;
+  border:1px solid var(--border2);padding:2px 7px;border-radius:3px;
+}
 
-/* mobile menu */
-.mob-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1998;opacity:0;visibility:hidden;transition:.3s;}
+.nav-links { display:flex;align-items:center;gap:1px; }
+.nav-links a {
+  font-family:var(--mono);font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--dim);text-decoration:none;padding:6px 13px;border-radius:5px;
+  transition:var(--transition);border:1px solid transparent;white-space:nowrap;
+  position:relative;
+}
+.nav-links a::after {
+  content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
+  width:0;height:1px;background:var(--amber);transition:var(--transition);
+}
+.nav-links a:hover { color:var(--text); }
+.nav-links a:hover::after { width:60%; }
+
+.nav-right { display:flex;align-items:center;gap:10px; }
+
+/* Search trigger */
+.nav-search-btn {
+  display:flex;align-items:center;gap:7px;
+  font-family:var(--mono);font-size:0.62rem;letter-spacing:0.06em;
+  color:var(--muted);background:var(--bg2);border:1px solid var(--border);
+  padding:6px 12px;border-radius:5px;cursor:pointer;transition:var(--transition);white-space:nowrap;
+}
+.nav-search-btn:hover { border-color:var(--border2);color:var(--dim); }
+.nav-search-btn kbd {
+  background:var(--bg3);border:1px solid var(--border2);border-radius:3px;
+  padding:1px 5px;font-size:0.55rem;color:var(--muted);
+}
+
+.btn-discord {
+  display:flex;align-items:center;gap:7px;
+  font-family:var(--mono);font-size:0.67rem;letter-spacing:0.06em;text-transform:uppercase;
+  background:var(--amber);color:#000;padding:8px 16px;border-radius:5px;text-decoration:none;
+  transition:var(--transition);font-weight:700;white-space:nowrap;flex-shrink:0;
+  box-shadow:0 2px 16px rgba(232,168,76,0.25);
+}
+.btn-discord:hover { background:var(--amber2);transform:translateY(-1px);box-shadow:0 4px 24px rgba(232,168,76,0.35); }
+
+.hamburger {
+  display:none;background:var(--bg2);border:1px solid var(--border);color:var(--text);
+  width:36px;height:36px;border-radius:5px;cursor:pointer;font-size:.9rem;
+  align-items:center;justify-content:center;transition:var(--transition);
+}
+.hamburger:hover { border-color:var(--amber-border);color:var(--amber); }
+
+/* ═══════════════════ COMMAND PALETTE ═══════════════════ */
+.cmd-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9000;
+  display:flex;align-items:flex-start;justify-content:center;padding:15vh 1rem 2rem;
+  opacity:0;visibility:hidden;transition:var(--transition);backdrop-filter:blur(8px);
+}
+.cmd-overlay.open { opacity:1;visibility:visible; }
+.cmd-box {
+  width:100%;max-width:580px;
+  background:var(--bg2);border:1px solid var(--border2);border-radius:12px;
+  overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.04);
+  animation:cmdDown .18s cubic-bezier(.4,0,.2,1);
+}
+@keyframes cmdDown{from{transform:translateY(-16px) scale(.98);opacity:0;}to{transform:none;opacity:1;}}
+.cmd-input-wrap {
+  display:flex;align-items:center;gap:12px;
+  padding:0 1.2rem;border-bottom:1px solid var(--border);
+}
+.cmd-input-wrap i { color:var(--dim);font-size:.85rem;flex-shrink:0; }
+.cmd-input {
+  width:100%;background:transparent;border:none;outline:none;
+  font-family:var(--body);font-size:1rem;color:var(--text);padding:1.1rem 0;
+}
+.cmd-input::placeholder { color:var(--muted); }
+.cmd-results { max-height:340px;overflow-y:auto;padding:.4rem; }
+.cmd-section-label {
+  font-family:var(--mono);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);padding:.6rem .8rem .3rem;
+}
+.cmd-item {
+  display:flex;align-items:center;gap:12px;padding:.7rem .8rem;border-radius:7px;
+  cursor:pointer;transition:var(--transition);
+}
+.cmd-item:hover,.cmd-item.active {
+  background:var(--amber-dim);
+}
+.cmd-item i {
+  width:28px;height:28px;background:var(--bg3);border:1px solid var(--border);border-radius:5px;
+  display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--amber);flex-shrink:0;
+}
+.cmd-item-text { flex:1; }
+.cmd-item-title { font-size:.85rem;color:var(--text);font-weight:500; }
+.cmd-item-sub { font-family:var(--mono);font-size:.6rem;color:var(--muted); }
+.cmd-footer {
+  display:flex;gap:1.2rem;padding:.7rem 1.2rem;border-top:1px solid var(--border);
+  font-family:var(--mono);font-size:.58rem;color:var(--muted);letter-spacing:.05em;
+}
+.cmd-footer kbd {
+  background:var(--bg3);border:1px solid var(--border2);border-radius:3px;
+  padding:1px 6px;font-size:.58rem;color:var(--dim);
+}
+
+/* ═══════════════════ TOAST SYSTEM ═══════════════════ */
+.toast-stack {
+  position:fixed;bottom:24px;right:24px;z-index:9999;
+  display:flex;flex-direction:column;gap:10px;pointer-events:none;
+}
+.toast {
+  display:flex;align-items:center;gap:12px;
+  background:var(--bg2);border:1px solid var(--border2);border-radius:8px;
+  font-family:var(--mono);font-size:.67rem;letter-spacing:.06em;
+  color:var(--text);padding:12px 18px;min-width:260px;max-width:360px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.6);pointer-events:auto;
+  transform:translateX(110%);transition:.35s cubic-bezier(.4,0,.2,1);
+}
+.toast.show { transform:translateX(0); }
+.toast-icon { font-size:1rem;flex-shrink:0; }
+.toast.success { border-color:rgba(61,220,132,0.3);color:var(--green); }
+.toast.success .toast-icon { color:var(--green); }
+.toast.error { border-color:rgba(240,112,112,0.3);color:var(--red); }
+.toast.error .toast-icon { color:var(--red); }
+.toast.info { border-color:var(--amber-border);color:var(--amber); }
+.toast.info .toast-icon { color:var(--amber); }
+.toast-body { flex:1;min-width:0; }
+.toast-title { font-weight:600;margin-bottom:2px; }
+.toast-msg { font-size:.6rem;color:var(--dim);font-weight:400; }
+.toast-close { cursor:pointer;color:var(--muted);background:none;border:none;font-size:.75rem;flex-shrink:0;padding:2px; }
+
+/* ═══════════════════ MOBILE DRAWER ═══════════════════ */
+.mob-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1998;
+  opacity:0;visibility:hidden;transition:var(--transition);backdrop-filter:blur(4px);
+}
 .mob-overlay.open{opacity:1;visibility:visible;}
-.mob-menu{
-  position:fixed;top:0;right:-100%;width:260px;height:100vh;
+.mob-menu {
+  position:fixed;top:0;right:-100%;width:280px;height:100dvh;
   background:var(--bg1);border-left:1px solid var(--border);z-index:1999;
-  padding:1.5rem;display:flex;flex-direction:column;gap:1rem;transition:.35s cubic-bezier(.4,0,.2,1);
+  padding:0;display:flex;flex-direction:column;
+  transition:.35s cubic-bezier(.4,0,.2,1);overflow:hidden;
 }
 .mob-menu.open{right:0;}
-.mob-header{display:flex;justify-content:space-between;align-items:center;}
-.mob-logo{font-family:var(--head);font-weight:800;font-size:1.1rem;letter-spacing:.1em;color:var(--amber);}
-.mob-close{background:none;border:none;color:var(--dim);cursor:pointer;font-size:1.2rem;padding:4px;}
-.mob-links{display:flex;flex-direction:column;gap:4px;margin-top:.5rem;}
+.mob-header {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.mob-logo{font-family:var(--head);font-weight:400;font-size:1.1rem;letter-spacing:.12em;color:var(--amber);}
+.mob-close {
+  background:var(--bg2);border:1px solid var(--border);color:var(--dim);
+  cursor:pointer;width:32px;height:32px;border-radius:5px;font-size:.8rem;
+  display:flex;align-items:center;justify-content:center;transition:var(--transition);
+}
+.mob-close:hover{color:var(--red);border-color:rgba(240,112,112,.3);}
+.mob-links{display:flex;flex-direction:column;gap:2px;padding:1rem;flex:1;overflow-y:auto;}
 .mob-links a{
   font-family:var(--mono);font-size:0.72rem;letter-spacing:.07em;text-transform:uppercase;
-  color:var(--dim);text-decoration:none;padding:10px 14px;border-radius:4px;
-  border:1px solid transparent;transition:.2s;
+  color:var(--dim);text-decoration:none;padding:11px 14px;border-radius:6px;
+  border:1px solid transparent;transition:var(--transition);display:flex;align-items:center;gap:10px;
 }
-.mob-links a:hover{color:var(--amber);border-color:var(--amber-dim);background:var(--amber-dim);}
+.mob-links a:hover{color:var(--amber);border-color:var(--amber-border);background:var(--amber-dim);}
+.mob-links a i{width:16px;text-align:center;font-size:.8rem;}
+.mob-discord {
+  margin:1rem;padding:1rem;background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:8px;
+}
+.mob-discord a {
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:.08em;
+  color:var(--amber);text-decoration:none;text-transform:uppercase;
+}
 
-.hero{
+/* ═══════════════════ MODAL SYSTEM ═══════════════════ */
+.modal-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:5000;
+  display:flex;align-items:center;justify-content:center;padding:2rem 1rem;
+  opacity:0;visibility:hidden;transition:var(--transition);
+  overflow-y:auto;align-items:flex-start;padding-top:4rem;
+  backdrop-filter:blur(8px);
+}
+.modal-overlay.open{opacity:1;visibility:visible;}
+.modal-box {
+  background:var(--bg1);border:1px solid var(--border2);border-radius:14px;
+  width:100%;max-width:740px;overflow:hidden;
+  animation:modalUp .25s cubic-bezier(.4,0,.2,1);position:relative;
+  box-shadow:0 40px 120px rgba(0,0,0,0.7);
+}
+@keyframes modalUp{from{transform:translateY(24px) scale(.98);opacity:0;}to{transform:none;opacity:1;}}
+.modal-head {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.3rem 1.8rem;border-bottom:1px solid var(--border);
+  background:linear-gradient(to bottom,var(--bg2),transparent);
+  position:sticky;top:0;z-index:10;
+  backdrop-filter:blur(20px);
+}
+.modal-title {
+  font-family:var(--head);font-size:1.35rem;font-weight:400;letter-spacing:.07em;text-transform:uppercase;
+}
+.modal-close {
+  background:var(--bg3);border:1px solid var(--border);color:var(--dim);
+  width:36px;height:36px;border-radius:7px;cursor:pointer;font-size:.8rem;
+  transition:var(--transition);display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.modal-close:hover{background:rgba(240,112,112,.15);border-color:var(--red);color:var(--red);}
+
+/* ═══════════════════ HERO ═══════════════════ */
+.hero {
   min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:120px 2rem 100px;position:relative;overflow:hidden;
 }
-.hero-grid-bg{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(232,168,76,0.045) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(232,168,76,0.045) 1px,transparent 1px);
-  background-size:80px 80px;
-}
-.hero-grid-bg::after{
+
+/* Cinematic vignette */
+.hero::before {
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 65% at 50% 50%, rgba(8,8,8,0) 0%, rgba(8,8,8,0.92) 68%);
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 0%,rgba(232,168,76,0.08) 0%,transparent 65%),
+    radial-gradient(ellipse 100% 60% at 50% 100%,rgba(6,6,8,0.95) 0%,transparent 50%);
+  pointer-events:none;z-index:1;
 }
-.hero-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:var(--mono);font-size:0.68rem;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--amber);border:1px solid rgba(232,168,76,0.3);padding:8px 18px;border-radius:4px;
-  margin-bottom:3rem;position:relative;z-index:1;
+
+.hero-content { position:relative;z-index:2; }
+
+.hero-badge {
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:0.65rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--amber);border:1px solid var(--amber-border);padding:9px 20px;border-radius:5px;
+  margin-bottom:3.5rem;
+  background:rgba(232,168,76,0.06);
+  box-shadow:0 0 30px rgba(232,168,76,0.1),inset 0 1px 0 rgba(255,255,255,0.04);
+  animation:badgePulse 3s ease-in-out infinite;
 }
-.hero-badge .dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);}
-.hero h1{
+@keyframes badgePulse{
+  0%,100%{box-shadow:0 0 20px rgba(232,168,76,0.1);}
+  50%{box-shadow:0 0 40px rgba(232,168,76,0.2);}
+}
+.hero-badge .dot {
+  width:7px;height:7px;background:var(--green);border-radius:50%;
+  box-shadow:0 0 10px var(--green);
+  animation:dotBlink 2s ease-in-out infinite;
+}
+@keyframes dotBlink{0%,100%{opacity:1;}50%{opacity:.5;}}
+
+.hero h1 {
   font-family:var(--head);
-  font-size:clamp(4.5rem,12vw,10rem);
-
-  font-weight:900;        /* mais pesado */
-  letter-spacing:-0.04em; /* mais “colado” */
-  font-style:italic;      /* inclinado igual */
-  line-height:.9;         /* mais compacto */
-
+  font-size:clamp(5rem,14vw,12rem);
+  font-weight:400;
+  letter-spacing:-0.02em;
+  line-height:.88;
   text-transform:uppercase;
+  background:linear-gradient(160deg,#fff 20%,var(--amber) 60%,rgba(232,168,76,0.6) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-.hero h1 em{font-style:normal;color:var(--amber);}
-.hero h1 .line2{display:block;font-size:clamp(1.2rem,3.5vw,2.5rem);font-weight:400;letter-spacing:.4em;color:var(--muted);margin-top:.3rem;font-family:var(--mono);}
-.hero-sub{
-  font-size:1.05rem;color:var(--dim);max-width:440px;margin:2.2rem auto 3.5rem;
-  position:relative;z-index:1;font-weight:300;line-height:1.7;
+.hero h1 .line2 {
+  display:block;
+  font-size:clamp(1rem,3vw,2rem);
+  font-weight:400;letter-spacing:.55em;
+  -webkit-text-fill-color:var(--muted);
+  margin-top:.4rem;font-family:var(--mono);
+  font-style:normal;
 }
-.hero-ctas{display:flex;gap:14px;justify-content:center;position:relative;z-index:1;flex-wrap:wrap;}
-.cta-primary{
-  font-family:var(--mono);font-size:0.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
-  background:var(--amber);color:#000;padding:15px 32px;border-radius:4px;text-decoration:none;
-  border:none;cursor:pointer;transition:.2s;
-}
-.cta-primary:hover{background:#f0b85a;transform:translateY(-2px);}
-.cta-ghost{
-  font-family:var(--mono);font-size:0.75rem;letter-spacing:.1em;text-transform:uppercase;
-  background:transparent;color:var(--text);padding:15px 32px;border-radius:4px;text-decoration:none;
-  border:1px solid var(--border2);cursor:pointer;transition:.2s;
-}
-.cta-ghost:hover{border-color:var(--amber);color:var(--amber);}
-.hero-stats{
-  display:flex;gap:4rem;justify-content:center;margin-top:5rem;
-  position:relative;z-index:1;flex-wrap:wrap;
-}
-.stat{text-align:center;}
-.stat-n{font-family:var(--head);font-size:2.4rem;font-weight:400;color:var(--amber);letter-spacing:.04em;}
-.stat-l{font-family:var(--mono);font-size:0.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
 
-/* ═══════════════════ SECTION HEADER ═══════════════════ */
-.s-wrap{max-width:1280px;margin:0 auto;padding:90px 2rem;}
-.s-tag{
-  font-family:var(--mono);font-size:0.72rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--amber);margin-bottom:1.4rem;display:flex;align-items:center;gap:12px;
+.hero-sub {
+  font-size:1.05rem;color:var(--dim);max-width:460px;margin:2.5rem auto 4rem;
+  font-weight:300;line-height:1.75;
 }
-.s-tag::before{content:'';width:24px;height:1px;background:var(--amber);}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+/* Animated CTA buttons */
+.cta-primary {
+  position:relative;overflow:hidden;
+  font-family:var(--mono);font-size:0.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  background:var(--amber);color:#000;padding:15px 34px;border-radius:6px;text-decoration:none;
+  border:none;cursor:pointer;transition:var(--transition);
+  box-shadow:0 4px 20px rgba(232,168,76,0.3);
+}
+.cta-primary::before {
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+  transition:.6s;
+}
+.cta-primary:hover::before { left:100%; }
+.cta-primary:hover { background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(232,168,76,0.4); }
+
+.cta-ghost {
+  font-family:var(--mono);font-size:0.72rem;letter-spacing:.1em;text-transform:uppercase;
+  background:transparent;color:var(--text);padding:15px 34px;border-radius:6px;text-decoration:none;
+  border:1px solid var(--border2);cursor:pointer;transition:var(--transition);
+}
+.cta-ghost:hover{border-color:var(--amber-border);color:var(--amber);background:var(--amber-dim);}
+
+.hero-stats {
+  display:flex;gap:0;margin-top:6rem;
+  border:1px solid var(--border);border-radius:10px;overflow:hidden;
+  background:var(--glass);backdrop-filter:blur(20px);
+  flex-wrap:wrap;
+}
+.stat {
+  text-align:center;padding:1.4rem 3rem;flex:1;min-width:120px;
+  border-right:1px solid var(--border);position:relative;
+}
+.stat:last-child{border-right:none;}
+.stat::before {
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:50%;height:1px;background:linear-gradient(90deg,transparent,var(--amber),transparent);
+  opacity:0;transition:var(--transition);
+}
+.stat:hover::before{opacity:1;}
+.stat-n{font-family:var(--head);font-size:2.5rem;font-weight:400;color:var(--amber);letter-spacing:.04em;}
+.stat-l{font-family:var(--mono);font-size:0.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+
+/* ═══════════════════ SECTION SYSTEM ═══════════════════ */
+.s-wrap{max-width:1320px;margin:0 auto;padding:100px 2rem;}
+.section-divider{border:none;border-top:1px solid var(--border);margin:0;}
+
+.s-tag{
+  font-family:var(--mono);font-size:0.67rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:1.6rem;display:flex;align-items:center;gap:14px;
+}
+.s-tag::before{content:'';width:28px;height:1px;background:var(--amber);}
+
 .s-h2{
   font-family:var(--head);
-  font-size:clamp(1.35rem,6vw,5.25rem);
-  font-weight:900;
-  letter-spacing:-0.04em;
-  text-transform:uppercase;
-  line-height:.9;
-  font-style:italic;
-  margin-bottom:.5rem;
+  font-size:clamp(1.6rem,6vw,5.5rem);
+  font-weight:400;letter-spacing:-0.02em;text-transform:uppercase;line-height:.88;
+  font-style:italic;margin-bottom:.6rem;
 }
 .s-h2 em{font-style:normal;color:var(--amber);}
-.s-sub{color:var(--dim);font-size:.95rem;max-width:520px;line-height:1.65;}
+.s-sub{color:var(--dim);font-size:.92rem;max-width:540px;line-height:1.7;}
 
 /* ═══════════════════ CATALOG GRID ═══════════════════ */
 .catalog-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-  gap:16px;
-  margin-top:3rem;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));
+  gap:14px;margin-top:3.5rem;
 }
+
 .c-card{
-  background:var(--bg1);border:1px solid var(--border);border-radius:8px;
-  display:flex;flex-direction:column;
-  transition:.25s;position:relative;overflow:hidden;
-  cursor:pointer;
+  background:var(--bg1);border:1px solid var(--border);border-radius:12px;
+  display:flex;flex-direction:column;transition:var(--transition);position:relative;
+  overflow:hidden;cursor:pointer;
+}
+.c-card::before {
+  content:'';position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(232,168,76,0.06),transparent);
+  opacity:0;transition:var(--transition);
 }
 .c-card::after{
-  content:'';position:absolute;inset:0;
-  border:1px solid transparent;transition:.25s;pointer-events:none;border-radius:8px;
+  content:'';position:absolute;inset:-1px;z-index:0;
+  border:1px solid transparent;transition:var(--transition);pointer-events:none;border-radius:12px;
 }
-.c-card:hover::after{border-color:rgba(232,168,76,0.3);}
-.c-card:hover{background:var(--bg2);z-index:2;transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.4);}
-.c-card.locked{opacity:.45;cursor:default;}
+.c-card:hover::before{opacity:1;}
+.c-card:hover::after{border-color:rgba(232,168,76,0.25);}
+.c-card:hover{
+  background:var(--bg2);
+  transform:translateY(-4px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(232,168,76,0.12);
+}
+.c-card.locked{opacity:.42;cursor:default;}
 .c-card.locked:hover{background:var(--bg1);transform:none;box-shadow:none;}
 .c-card.locked:hover::after{border-color:transparent;}
-.c-img{height:180px;overflow:hidden;position:relative;}
-.c-img img{width:100%;height:100%;object-fit:cover;transition:.5s;filter:brightness(.7) saturate(.8);}
-.c-card:hover .c-img img{transform:scale(1.05);filter:brightness(.9) saturate(1);}
+.c-card.locked:hover::before{opacity:0;}
+
+.c-img{height:190px;overflow:hidden;position:relative;z-index:1;}
+.c-img img{
+  width:100%;height:100%;object-fit:cover;transition:.6s cubic-bezier(.4,0,.2,1);
+  filter:brightness(.65) saturate(.75);
+}
+.c-card:hover .c-img img{transform:scale(1.07);filter:brightness(.85) saturate(1);}
 .c-img-overlay{
   position:absolute;inset:0;
-  background:linear-gradient(to top,var(--bg1) 0%,transparent 55%);
+  background:linear-gradient(to top,var(--bg1) 0%,transparent 60%);
 }
-.c-body{padding:1.4rem 1.6rem 1.6rem;flex-grow:1;display:flex;flex-direction:column;gap:.7rem;}
+
+/* featured badge */
+.c-featured-badge {
+  position:absolute;top:12px;right:12px;
+  font-family:var(--mono);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--amber);color:#000;padding:3px 9px;border-radius:3px;font-weight:700;
+  z-index:2;
+}
+
+.c-body{padding:1.4rem 1.6rem 1.8rem;flex-grow:1;display:flex;flex-direction:column;gap:.8rem;z-index:1;position:relative;}
 .c-tag-row{display:flex;align-items:center;justify-content:space-between;}
 .c-game-tag{
-  font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--amber);background:var(--amber-dim);border:1px solid rgba(232,168,76,0.2);
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--amber);background:var(--amber-dim);border:1px solid rgba(232,168,76,0.18);
   padding:4px 10px;border-radius:3px;
 }
-.c-status{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;}
+.c-status{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;}
 .c-status.on{color:var(--green);}
-.c-status.on::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+.c-status.on::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);animation:dotBlink 2s infinite;}
 .c-status.soon{color:var(--muted);}
-.c-status.soon::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--muted);}
-.c-title{font-family:var(--head);font-size:1.35rem;font-weight:400;letter-spacing:.04em;color:var(--text);text-transform:uppercase;}
-.c-desc{font-size:.88rem;color:var(--dim);line-height:1.6;flex-grow:1;}
-.c-footer{display:flex;justify-content:space-between;align-items:center;margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border);}
-.c-price{font-family:var(--head);font-size:1.3rem;font-weight:400;color:var(--text);letter-spacing:.04em;}
-.c-price small{font-family:var(--mono);font-size:.6rem;color:var(--muted);font-weight:400;margin-left:4px;letter-spacing:.05em;}
-.btn-view{
-  font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;
-  background:var(--amber);color:#000;padding:8px 18px;border-radius:4px;
-  border:none;cursor:pointer;font-weight:700;transition:.15s;
+.c-status.soon::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--muted);}
+
+.c-title{font-family:var(--head);font-size:1.3rem;font-weight:400;letter-spacing:.05em;color:var(--text);text-transform:uppercase;}
+.c-desc{font-size:.85rem;color:var(--dim);line-height:1.65;flex-grow:1;}
+
+/* Tags row */
+.c-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.c-tag{
+  font-family:var(--mono);font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);background:var(--bg3);border:1px solid var(--border);
+  padding:3px 8px;border-radius:3px;
 }
-.btn-view:hover{background:#f0b85a;}
+
+.c-footer{display:flex;justify-content:space-between;align-items:center;margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--border);}
+.c-price{font-family:var(--head);font-size:1.25rem;font-weight:400;color:var(--text);letter-spacing:.04em;}
+.c-price small{font-family:var(--mono);font-size:.58rem;color:var(--muted);font-weight:400;margin-left:4px;}
+.btn-view{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--amber);color:#000;padding:8px 18px;border-radius:5px;
+  border:none;cursor:pointer;font-weight:700;transition:var(--transition);
+}
+.btn-view:hover{background:var(--amber2);transform:translateY(-1px);}
 .btn-locked{
-  font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;
-  background:transparent;color:var(--muted);padding:8px 18px;border-radius:4px;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+  background:transparent;color:var(--muted);padding:8px 18px;border-radius:5px;
   border:1px solid var(--border);cursor:not-allowed;
 }
 
+/* Skeleton loader for catalog */
+.c-card.skeleton { cursor:default;animation:skelPulse 1.8s ease-in-out infinite; }
+.c-card.skeleton:hover{transform:none;box-shadow:none;}
+@keyframes skelPulse{0%,100%{opacity:.5;}50%{opacity:.8;}}
+.skel-img{height:190px;background:var(--bg3);}
+.skel-tag{height:18px;background:var(--bg3);border-radius:3px;width:100px;margin-bottom:.8rem;}
+.skel-title{height:22px;background:var(--bg3);border-radius:4px;width:70%;margin-bottom:.6rem;}
+.skel-desc{height:14px;background:var(--bg3);border-radius:3px;width:90%;margin-bottom:.4rem;}
+.skel-desc2{height:14px;background:var(--bg3);border-radius:3px;width:70%;}
+
+/* ═══════════════════ PRODUCT MODAL ═══════════════════ */
+.pmodal-img{width:100%;height:230px;object-fit:cover;filter:brightness(.7) saturate(.8);display:block;}
+.pmodal-body{padding:2rem;}
+.pmodal-desc{font-size:.88rem;color:var(--dim);margin-bottom:2rem;line-height:1.7;}
+.price-section{margin-bottom:2rem;}
+.price-section-title{
+  font-family:var(--mono);font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:.7rem;display:flex;align-items:center;gap:10px;
+}
+.price-section-title::before{content:'';width:16px;height:1px;background:var(--amber);}
+.price-table{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.p-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.85rem 1.2rem;border-bottom:1px solid var(--border);font-size:.83rem;
+  transition:var(--transition);
+}
+.p-row:last-child{border-bottom:none;}
+.p-row:hover{background:rgba(232,168,76,0.03);}
+.p-row span:first-child{color:var(--dim);}
+.p-row span:last-child{font-family:var(--mono);font-size:.78rem;color:var(--amber);font-weight:700;letter-spacing:.04em;}
+
+/* modal cta row */
+.pmodal-cta {
+  display:flex;gap:10px;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);
+}
+.pmodal-cta .cta-primary { flex:1;text-align:center;display:block; }
+.pmodal-cta .cta-ghost { flex:1;text-align:center;display:block; }
+
 /* ═══════════════════ HOW TO BUY ═══════════════════ */
 .steps-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:16px;margin-top:3rem;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:14px;margin-top:3.5rem;
 }
 .step{
-  background:var(--bg1);padding:2.2rem 1.8rem;position:relative;
-  border:1px solid var(--border);border-radius:8px;transition:.2s;
-}
-.step:hover{border-color:rgba(232,168,76,0.2);background:var(--bg2);}
-.step-num{
-  font-family:var(--head);font-size:3rem;font-weight:400;color:rgba(232,168,76,0.15);
-  line-height:1;margin-bottom:1rem;letter-spacing:.04em;
-}
-.step-title{font-family:var(--head);font-size:1.4rem;font-weight:400;letter-spacing:.04em;text-transform:uppercase;margin-bottom:.6rem;}
-.step-desc{font-size:.9rem;color:var(--dim);line-height:1.6;}
-
-/* ═══════════════════ TEAM ═══════════════════ */
-.team-grid{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-top:2.5rem;}
-.t-card{
-  width:200px;background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);
-  padding:1.5rem 1rem;text-align:center;transition:.25s;
+  background:var(--bg1);padding:2.4rem 2rem;
+  border:1px solid var(--border);border-radius:12px;transition:var(--transition);
   position:relative;overflow:hidden;
 }
-.t-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--amber);opacity:0;transition:.25s;}
-.t-card:hover{border-color:var(--border2);transform:translateY(-4px);}
-.t-card:hover::before{opacity:1;}
-.t-card.owner{border-color:rgba(232,168,76,0.25);}
-.t-card.owner::before{opacity:1;}
-.t-avatar{width:76px;height:76px;border-radius:50%;object-fit:cover;border:2px solid var(--border);margin:0 auto .9rem;display:block;transition:.25s;}
-.t-card:hover .t-avatar{border-color:rgba(232,168,76,0.4);}
-.t-name{font-family:var(--head);font-size:1.2rem;font-weight:400;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;}
-.t-role{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);background:var(--amber-dim);border:1px solid rgba(232,168,76,0.2);padding:3px 10px;border-radius:3px;}
+.step::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
+  transform:scaleX(0);transition:var(--transition);
+}
+.step:hover{border-color:rgba(232,168,76,0.2);background:var(--bg2);transform:translateY(-2px);}
+.step:hover::before{transform:scaleX(1);}
+.step-num{
+  font-family:var(--head);font-size:3.5rem;font-weight:400;
+  color:rgba(232,168,76,0.12);line-height:1;margin-bottom:1.2rem;letter-spacing:.04em;
+}
+.step-title{font-family:var(--head);font-size:1.3rem;font-weight:400;letter-spacing:.04em;text-transform:uppercase;margin-bottom:.6rem;}
+.step-desc{font-size:.88rem;color:var(--dim);line-height:1.65;}
 
-/* ═══════════════════ STATUS BAR ═══════════════════ */
+/* step connector */
+.step-connector{
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:.7rem;padding-top:1rem;
+}
+
+/* ═══════════════════ TEAM ═══════════════════ */
+.team-grid{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-top:3rem;}
+.t-card{
+  width:190px;background:var(--bg1);border:1px solid var(--border);border-radius:12px;
+  padding:1.8rem 1.2rem;text-align:center;transition:var(--transition);
+  position:relative;overflow:hidden;
+}
+.t-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--amber),transparent);
+  opacity:0;transition:var(--transition);
+}
+.t-card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,168,76,0.06),transparent);
+  opacity:0;transition:var(--transition);
+}
+.t-card:hover{border-color:var(--amber-border);transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
+.t-card:hover::before,.t-card.owner::before{opacity:1;}
+.t-card:hover::after,.t-card.owner::after{opacity:1;}
+.t-card.owner{border-color:rgba(232,168,76,0.2);}
+.t-avatar-wrap{position:relative;width:80px;height:80px;margin:0 auto 1rem;z-index:1;}
+.t-avatar{
+  width:80px;height:80px;border-radius:50%;object-fit:cover;
+  border:2px solid var(--border2);transition:var(--transition);display:block;
+}
+.t-card:hover .t-avatar{border-color:var(--amber-border);box-shadow:0 0 20px rgba(232,168,76,0.25);}
+.t-card.owner .t-avatar{border-color:var(--amber-border);}
+.t-avatar-ring{
+  position:absolute;inset:-4px;border-radius:50%;
+  border:1px solid transparent;transition:var(--transition);
+}
+.t-card:hover .t-avatar-ring,.t-card.owner .t-avatar-ring{
+  border-color:rgba(232,168,76,0.3);
+  box-shadow:0 0 20px rgba(232,168,76,0.15);
+}
+.t-name{font-family:var(--head);font-size:1.15rem;font-weight:400;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.5rem;z-index:1;position:relative;}
+.t-role{
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--amber);background:var(--amber-dim);border:1px solid rgba(232,168,76,0.2);
+  padding:4px 12px;border-radius:3px;display:inline-block;z-index:1;position:relative;
+}
+
+/* ═══════════════════ STATUS PANEL ═══════════════════ */
 .status-bar{
-  background:var(--bg1);border:1px solid var(--border);border-radius:10px;
-  padding:2.5rem 2.5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  background:var(--bg1);border:1px solid var(--border);border-radius:12px;
+  padding:2.5rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
   gap:2rem;margin-top:3rem;
 }
 .status-item{display:flex;align-items:flex-start;gap:14px;}
-.s-dot-green{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);flex-shrink:0;margin-top:5px;}
-.s-dot-amber{width:10px;height:10px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber);flex-shrink:0;margin-top:5px;}
-.status-item-label{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text);font-weight:500;margin-bottom:4px;}
-.status-item-val{font-family:var(--mono);font-size:.72rem;color:var(--green);letter-spacing:.04em;}
+.s-dot{
+  width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:6px;
+}
+.s-dot.green{background:var(--green);box-shadow:0 0 10px var(--green);}
+.s-dot.amber{background:var(--amber);box-shadow:0 0 10px var(--amber);animation:dotBlink 2s infinite;}
+.s-dot.red{background:var(--red);box-shadow:0 0 10px var(--red);}
+.status-item-label{font-family:var(--mono);font-size:.73rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text);font-weight:500;margin-bottom:4px;}
+.status-item-val{font-family:var(--mono);font-size:.68rem;color:var(--green);letter-spacing:.04em;}
+.status-item-val.amber{color:var(--amber);}
 
 /* ═══════════════════ TICKET SYSTEM ═══════════════════ */
-#ticket-section{border-top:1px solid var(--border);}
 .ticket-wrap{
-  display:grid;grid-template-columns:1fr 1fr;gap:0;
-  border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:2.5rem;
+  display:grid;grid-template-columns:1fr 1.4fr;gap:0;
+  border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:3rem;
 }
 .ticket-info{
-  background:var(--bg1);padding:2.5rem;border-right:1px solid var(--border);
+  background:var(--bg1);padding:2.8rem;border-right:1px solid var(--border);
 }
-.ticket-info h3{font-family:var(--head);font-size:1.3rem;font-weight:800;margin-bottom:.5rem;}
-.ticket-info p{color:var(--dim);font-size:.85rem;line-height:1.6;margin-bottom:1.5rem;}
-.ticket-features{display:flex;flex-direction:column;gap:.6rem;}
-.t-feat{display:flex;align-items:center;gap:10px;font-size:.82rem;color:var(--dim);}
-.t-feat::before{content:'→';font-family:var(--mono);color:var(--amber);font-size:.75rem;}
-.ticket-form{background:var(--bg2);padding:2.5rem;}
-.ticket-form h3{font-family:var(--head);font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;letter-spacing:.03em;}
-.form-group{margin-bottom:1.1rem;}
-.form-group label{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:.4rem;}
+.ticket-info h3{
+  font-family:var(--head);font-size:1.4rem;font-weight:400;letter-spacing:.05em;
+  text-transform:uppercase;margin-bottom:.6rem;
+}
+.ticket-info p{color:var(--dim);font-size:.85rem;line-height:1.7;margin-bottom:2rem;}
+.ticket-features{display:flex;flex-direction:column;gap:.7rem;}
+.t-feat{
+  display:flex;align-items:flex-start;gap:10px;font-size:.84rem;color:var(--dim);
+  padding:.6rem 0;border-bottom:1px solid var(--border);
+}
+.t-feat:last-child{border-bottom:none;}
+.t-feat-icon{
+  width:28px;height:28px;background:var(--amber-dim);border:1px solid rgba(232,168,76,0.2);
+  border-radius:5px;display:flex;align-items:center;justify-content:center;
+  color:var(--amber);font-size:.7rem;flex-shrink:0;margin-top:1px;
+}
+
+.discord-box{
+  margin-top:2rem;padding:1.4rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;
+}
+.discord-box-label{
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:.6rem;
+}
+.discord-box p{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:.8rem;}
+
+.ticket-form{background:var(--bg2);padding:2.8rem;}
+.ticket-form h3{
+  font-family:var(--head);font-size:1.15rem;font-weight:400;letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:1.8rem;
+}
+.form-group{margin-bottom:1.2rem;}
+.form-group label{
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--dim);display:block;margin-bottom:.5rem;
+}
 .form-group input,
 .form-group select,
 .form-group textarea{
-  width:100%;background:var(--bg1);border:1px solid var(--border);border-radius:4px;
-  color:var(--text);font-family:var(--body);font-size:.85rem;padding:10px 12px;
-  transition:.2s;outline:none;
+  width:100%;background:var(--bg1);border:1px solid var(--border);border-radius:6px;
+  color:var(--text);font-family:var(--body);font-size:.85rem;padding:11px 14px;
+  transition:var(--transition);outline:none;
 }
 .form-group input:focus,
 .form-group select:focus,
-.form-group textarea:focus{border-color:rgba(232,168,76,0.5);background:var(--bg);}
+.form-group textarea:focus{
+  border-color:rgba(232,168,76,0.45);
+  background:rgba(12,12,16,0.8);
+  box-shadow:0 0 0 3px rgba(232,168,76,0.08);
+}
 .form-group select option{background:var(--bg1);}
 .form-group textarea{resize:vertical;min-height:90px;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
-.btn-ticket{
-  width:100%;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
-  background:var(--amber);color:#000;padding:13px;border:none;border-radius:4px;
-  cursor:pointer;transition:.2s;margin-top:.5rem;
-}
-.btn-ticket:hover{background:#f0b85a;transform:translateY(-1px);}
-.form-msg{
-  display:none;margin-top:.8rem;padding:10px 14px;border-radius:4px;
-  font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;
-}
-.form-msg.success{background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);color:var(--green);display:block;}
-.form-msg.error{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:var(--red);display:block;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
 
-/* ═══════════════════ PRODUCT MODAL ═══════════════════ */
-.pmodal{
-  position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:5000;
-  display:flex;align-items:flex-start;justify-content:center;padding:3rem 1rem 2rem;
-  opacity:0;visibility:hidden;transition:.25s;overflow-y:auto;
+/* Priority selector */
+.priority-select{display:flex;gap:6px;margin-top:.4rem;}
+.priority-btn{
+  flex:1;font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--bg1);border:1px solid var(--border);border-radius:5px;padding:8px 6px;
+  cursor:pointer;transition:var(--transition);color:var(--muted);text-align:center;
 }
-.pmodal.open{opacity:1;visibility:visible;}
-.pmodal-box{
-  background:var(--bg1);border:1px solid var(--border2);border-radius:10px;
-  width:100%;max-width:720px;overflow:hidden;animation:mup .3s ease;position:relative;
+.priority-btn:hover{border-color:var(--border2);color:var(--text);}
+.priority-btn.active.p-low{background:var(--green-dim);border-color:rgba(61,220,132,.3);color:var(--green);}
+.priority-btn.active.p-mid{background:var(--amber-dim);border-color:var(--amber-border);color:var(--amber);}
+.priority-btn.active.p-high{background:var(--red-dim);border-color:rgba(240,112,112,.3);color:var(--red);}
+
+.btn-ticket{
+  width:100%;font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  background:var(--amber);color:#000;padding:14px;border:none;border-radius:6px;
+  cursor:pointer;transition:var(--transition);margin-top:.5rem;position:relative;overflow:hidden;
+  box-shadow:0 4px 16px rgba(232,168,76,0.25);
 }
-@keyframes mup{from{transform:translateY(20px);opacity:0;}to{transform:none;opacity:1;}}
-.pmodal-head{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:1.4rem 1.8rem;border-bottom:1px solid var(--border);background:var(--bg2);
-  position:sticky;top:0;z-index:10;
+.btn-ticket::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+  transition:.5s;
 }
-.pmodal-title{font-family:var(--head);font-size:1.4rem;font-weight:400;letter-spacing:.06em;text-transform:uppercase;}
-.pmodal-close{
-  background:none;border:1px solid var(--border);color:var(--dim);
-  width:38px;height:38px;border-radius:6px;cursor:pointer;font-size:1rem;
-  transition:.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+.btn-ticket:hover::before{left:100%;}
+.btn-ticket:hover{background:var(--amber2);transform:translateY(-1px);box-shadow:0 6px 24px rgba(232,168,76,0.35);}
+.btn-ticket:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+.form-msg{
+  display:none;margin-top:.9rem;padding:12px 16px;border-radius:6px;
+  font-family:var(--mono);font-size:.63rem;letter-spacing:.07em;
 }
-.pmodal-close:hover{background:rgba(248,113,113,.15);border-color:var(--red);color:var(--red);}
-.pmodal-img{width:100%;height:220px;object-fit:cover;filter:brightness(.75) saturate(.85);display:block;}
-.pmodal-body{padding:1.8rem;}
-.pmodal-desc{font-size:.9rem;color:var(--dim);margin-bottom:1.8rem;line-height:1.6;}
-.price-section{margin-bottom:1.8rem;}
-.price-section-title{
-  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--amber);margin-bottom:.7rem;display:flex;align-items:center;gap:10px;
+.form-msg.success{background:rgba(61,220,132,0.08);border:1px solid rgba(61,220,132,0.25);color:var(--green);display:block;}
+.form-msg.error{background:var(--red-dim);border:1px solid rgba(240,112,112,0.25);color:var(--red);display:block;}
+
+/* char counter */
+.char-counter{font-family:var(--mono);font-size:.55rem;color:var(--muted);float:right;margin-top:.3rem;}
+
+/* typing indicator */
+.typing-indicator{
+  display:none;align-items:center;gap:8px;padding:.6rem 0;
+  font-family:var(--mono);font-size:.6rem;color:var(--muted);letter-spacing:.05em;
 }
-.price-section-title::before{content:'';width:14px;height:1px;background:var(--amber);}
-.price-table{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
-.p-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:.85rem 1.2rem;border-bottom:1px solid var(--border);font-size:.85rem;
-  transition:.15s;
+.typing-indicator.show{display:flex;}
+.typing-dots{display:flex;gap:3px;}
+.typing-dots span{
+  width:4px;height:4px;background:var(--muted);border-radius:50%;
+  animation:typingBounce .8s ease-in-out infinite;
 }
-.p-row:last-child{border-bottom:none;}
-.p-row:hover{background:rgba(255,255,255,.02);}
-.p-row span:first-child{color:var(--dim);}
-.p-row span:last-child{font-family:var(--mono);font-size:.8rem;color:var(--amber);font-weight:700;}
+.typing-dots span:nth-child(2){animation-delay:.15s;}
+.typing-dots span:nth-child(3){animation-delay:.3s;}
+@keyframes typingBounce{0%,80%,100%{transform:scale(.8);opacity:.5;}40%{transform:scale(1.2);opacity:1;}}
 
 /* ═══════════════════ TICKET TRACKER ═══════════════════ */
 .tracker-wrap{margin-top:3rem;}
 .tracker-header{
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:1.2rem;flex-wrap:wrap;gap:1rem;
+  margin-bottom:1.4rem;flex-wrap:wrap;gap:1rem;
 }
-.tracker-search{
-  display:flex;gap:8px;align-items:center;
+.tracker-filters{display:flex;gap:6px;flex-wrap:wrap;}
+.filter-chip{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--bg2);border:1px solid var(--border);border-radius:4px;
+  padding:6px 12px;cursor:pointer;transition:var(--transition);color:var(--muted);
 }
+.filter-chip:hover{border-color:var(--border2);color:var(--text);}
+.filter-chip.active{background:var(--amber-dim);border-color:var(--amber-border);color:var(--amber);}
+
+.tracker-search{display:flex;gap:8px;align-items:center;}
 .tracker-search input{
-  background:var(--bg1);border:1px solid var(--border);border-radius:4px;
-  color:var(--text);font-family:var(--mono);font-size:.78rem;padding:9px 14px;
-  outline:none;transition:.2s;width:200px;
+  background:var(--bg1);border:1px solid var(--border);border-radius:6px;
+  color:var(--text);font-family:var(--mono);font-size:.75rem;padding:9px 14px;
+  outline:none;transition:var(--transition);width:220px;
 }
-.tracker-search input:focus{border-color:rgba(232,168,76,0.5);}
+.tracker-search input:focus{border-color:rgba(232,168,76,.4);box-shadow:0 0 0 2px rgba(232,168,76,.07);}
 .tracker-search input::placeholder{color:var(--muted);}
+
 .btn-track{
-  font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
-  background:var(--bg2);color:var(--dim);padding:9px 18px;border:1px solid var(--border);border-radius:4px;
-  cursor:pointer;transition:.2s;
+  font-family:var(--mono);font-size:.67rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+  background:var(--bg2);color:var(--dim);padding:9px 18px;border:1px solid var(--border);border-radius:6px;
+  cursor:pointer;transition:var(--transition);
 }
-.btn-track:hover{border-color:var(--amber);color:var(--amber);}
+.btn-track:hover{border-color:var(--amber-border);color:var(--amber);}
+
 .tickets-list{display:flex;flex-direction:column;gap:10px;}
 .ticket-entry{
-  background:var(--bg1);border:1px solid var(--border);border-radius:8px;
+  background:var(--bg1);border:1px solid var(--border);border-radius:10px;
   padding:1.2rem 1.6rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
-  transition:.2s;
+  transition:var(--transition);cursor:pointer;
 }
-.ticket-entry:hover{border-color:var(--border2);background:var(--bg2);}
-.ticket-id{font-family:var(--mono);font-size:.78rem;color:var(--amber);font-weight:700;letter-spacing:.08em;white-space:nowrap;}
-.ticket-game{font-family:var(--mono);font-size:.68rem;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;}
-.ticket-service{font-size:.88rem;color:var(--text);flex-grow:1;}
+.ticket-entry:hover{border-color:var(--border2);background:var(--bg2);transform:translateX(2px);}
+.ticket-priority-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.ticket-priority-dot.low{background:var(--green);box-shadow:0 0 6px var(--green);}
+.ticket-priority-dot.mid{background:var(--amber);box-shadow:0 0 6px var(--amber);}
+.ticket-priority-dot.high{background:var(--red);box-shadow:0 0 6px var(--red);}
+.ticket-id{font-family:var(--mono);font-size:.76rem;color:var(--amber);font-weight:700;letter-spacing:.08em;white-space:nowrap;}
+.ticket-game{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
+.ticket-service{font-size:.86rem;color:var(--text);flex-grow:1;}
 .ticket-status-badge{
-  font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
   padding:4px 12px;border-radius:99px;white-space:nowrap;
 }
-.badge-pending{background:rgba(232,168,76,.12);color:var(--amber);border:1px solid rgba(232,168,76,.25);}
-.badge-progress{background:rgba(74,222,128,.1);color:var(--green);border:1px solid rgba(74,222,128,.25);}
-.badge-done{background:rgba(255,255,255,.05);color:var(--dim);border:1px solid var(--border);}
-.ticket-date{font-family:var(--mono);font-size:.65rem;color:var(--muted);white-space:nowrap;}
+.badge-pending{background:rgba(232,168,76,.1);color:var(--amber);border:1px solid rgba(232,168,76,.22);}
+.badge-progress{background:var(--green-dim);color:var(--green);border:1px solid rgba(61,220,132,.22);}
+.badge-done{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--border);}
+.ticket-date{font-family:var(--mono);font-size:.62rem;color:var(--muted);white-space:nowrap;}
+
 .tracker-empty{
-  text-align:center;padding:3rem;background:var(--bg1);border:1px solid var(--border);
-  border-radius:8px;font-family:var(--mono);font-size:.75rem;color:var(--muted);
-  letter-spacing:.1em;text-transform:uppercase;
+  text-align:center;padding:5rem 2rem;background:var(--bg1);border:1px solid var(--border);
+  border-radius:10px;
+}
+.tracker-empty-icon{font-size:2.5rem;margin-bottom:1rem;opacity:.3;}
+.tracker-empty h4{font-family:var(--head);font-size:1.2rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem;color:var(--dim);}
+.tracker-empty p{font-family:var(--mono);font-size:.68rem;color:var(--muted);letter-spacing:.06em;}
+
+/* ═══════════════════ REVIEWS SECTION ═══════════════════ */
+.reviews-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:14px;margin-top:3rem;
+}
+.review-card{
+  background:var(--bg1);border:1px solid var(--border);border-radius:10px;
+  padding:1.8rem;transition:var(--transition);position:relative;overflow:hidden;
+}
+.review-card::before{
+  content:'"';
+  position:absolute;top:-.5rem;right:1rem;
+  font-family:var(--head);font-size:6rem;color:rgba(232,168,76,0.07);
+  line-height:1;pointer-events:none;
+}
+.review-card:hover{background:var(--bg2);border-color:var(--border2);transform:translateY(-2px);}
+.review-stars{display:flex;gap:3px;margin-bottom:1rem;}
+.star{color:var(--amber);font-size:.85rem;}
+.review-text{font-size:.88rem;color:var(--dim);line-height:1.7;margin-bottom:1.4rem;font-style:italic;}
+.review-author{display:flex;align-items:center;gap:10px;}
+.review-avatar{
+  width:34px;height:34px;border-radius:50%;border:1px solid var(--border);
+  object-fit:cover;background:var(--bg3);display:flex;align-items:center;justify-content:center;
+  font-family:var(--head);font-size:.9rem;color:var(--amber);flex-shrink:0;overflow:hidden;
+}
+.review-avatar img{width:100%;height:100%;object-fit:cover;}
+.review-name{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--text);letter-spacing:.04em;}
+.review-game{font-family:var(--mono);font-size:.58rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+.review-badge{
+  margin-left:auto;font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--green);background:var(--green-dim);border:1px solid rgba(61,220,132,.2);padding:3px 8px;border-radius:3px;
 }
 
 /* ═══════════════════ FOOTER ═══════════════════ */
-footer{background:var(--bg);border-top:1px solid var(--border);padding:4rem 0 0;}
-.foot-inner{max-width:1280px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr auto auto auto;gap:3rem;flex-wrap:wrap;}
-.foot-brand .logo{margin-bottom:.7rem;}
-.foot-brand p{font-size:.8rem;color:var(--muted);max-width:200px;line-height:1.5;}
-.socials{display:flex;gap:6px;margin-top:1rem;}
+footer{background:var(--bg);border-top:1px solid var(--border);padding:5rem 0 0;}
+.foot-inner{
+  max-width:1320px;margin:0 auto;padding:0 2rem;
+  display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:3.5rem;
+}
+.foot-brand .logo{margin-bottom:.8rem;}
+.foot-brand p{font-size:.8rem;color:var(--muted);max-width:220px;line-height:1.6;}
+.socials{display:flex;gap:7px;margin-top:1.2rem;}
 .soc-btn{
-  width:34px;height:34px;background:var(--bg2);border:1px solid var(--border);border-radius:4px;
+  width:34px;height:34px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;
   color:var(--dim);text-decoration:none;display:flex;align-items:center;justify-content:center;
-  font-size:.85rem;transition:.2s;
+  font-size:.82rem;transition:var(--transition);
 }
-.soc-btn:hover{border-color:rgba(232,168,76,.3);color:var(--amber);background:var(--amber-dim);}
-.foot-col h5{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
-.foot-col ul{list-style:none;}
-.foot-col ul li{margin-bottom:.5rem;}
-.foot-col ul li a{font-size:.82rem;color:var(--dim);text-decoration:none;transition:.15s;}
+.soc-btn:hover{border-color:var(--amber-border);color:var(--amber);background:var(--amber-dim);}
+
+.foot-col h5{
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:1.1rem;
+}
+.foot-col ul{list-style:none;display:flex;flex-direction:column;gap:.45rem;}
+.foot-col ul li a{font-size:.8rem;color:var(--dim);text-decoration:none;transition:var(--transition);}
 .foot-col ul li a:hover{color:var(--text);}
+
 .foot-bottom{
-  margin-top:3rem;padding:1.5rem 2rem;border-top:1px solid var(--border);
+  max-width:1320px;margin:3rem auto 0;padding:1.5rem 2rem;border-top:1px solid var(--border);
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;
-  max-width:1280px;margin-left:auto;margin-right:auto;
 }
-.foot-bottom p{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--muted);}
-.ver-badge{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--muted);display:flex;align-items:center;gap:6px;}
+.foot-bottom p{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;color:var(--muted);}
+.ver-badge{font-family:var(--mono);font-size:.6rem;letter-spacing:.06em;color:var(--muted);display:flex;align-items:center;gap:6px;}
 .ver-dot{width:5px;height:5px;background:var(--amber);border-radius:50%;}
 
-/* ═══════════════════ TOAST ═══════════════════ */
-.toast{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
-  background:var(--bg2);border:1px solid var(--border2);border-radius:4px;
-  font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--text);padding:12px 24px;z-index:9000;transition:.35s cubic-bezier(.4,0,.2,1);
-  white-space:nowrap;
+/* ═══════════════════ TERMS MODAL ═══════════════════ */
+.terms-body{padding:2rem;max-height:60vh;overflow-y:auto;}
+.terms-body h4{
+  font-family:var(--head);font-size:1rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--amber);margin:1.5rem 0 .5rem;
 }
-.toast.show{transform:translateX(-50%) translateY(0);}
-.toast.ok{border-color:rgba(74,222,128,.4);color:var(--green);}
+.terms-body h4:first-child{margin-top:0;}
+.terms-body p,.terms-body li{font-size:.84rem;color:var(--dim);line-height:1.7;}
+.terms-body ul{padding-left:1.2rem;margin:.4rem 0;}
+.terms-body li::marker{color:var(--amber);}
+
+/* ═══════════════════ SCROLL ANIMATIONS ═══════════════════ */
+.fade-in{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.4,0,.2,1);}
+.fade-in.visible{opacity:1;transform:none;}
+.fade-in-delay-1{transition-delay:.1s;}
+.fade-in-delay-2{transition-delay:.2s;}
+.fade-in-delay-3{transition-delay:.3s;}
+.fade-in-delay-4{transition-delay:.4s;}
+
+/* stagger cards */
+.stagger > *:nth-child(1){transition-delay:.05s;}
+.stagger > *:nth-child(2){transition-delay:.1s;}
+.stagger > *:nth-child(3){transition-delay:.15s;}
+.stagger > *:nth-child(4){transition-delay:.2s;}
+.stagger > *:nth-child(5){transition-delay:.25s;}
+.stagger > *:nth-child(6){transition-delay:.3s;}
+
+/* ═══════════════════ PAGE LOADER ═══════════════════ */
+.page-loader{
+  position:fixed;inset:0;background:var(--bg);z-index:99999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;
+  transition:opacity .5s, visibility .5s;
+}
+.page-loader.hidden{opacity:0;visibility:hidden;}
+.loader-logo{
+  font-family:var(--head);font-size:3rem;letter-spacing:.15em;color:var(--amber);
+  animation:loaderPulse 1.5s ease-in-out infinite;
+}
+@keyframes loaderPulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+.loader-bar{
+  width:160px;height:2px;background:var(--bg3);border-radius:99px;overflow:hidden;
+}
+.loader-fill{
+  height:100%;background:linear-gradient(90deg,var(--amber),var(--amber2));
+  border-radius:99px;width:0;animation:loaderFill 1.2s ease-in-out forwards;
+}
+@keyframes loaderFill{to{width:100%;}}
+.loader-text{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);
+}
 
 /* ═══════════════════ RESPONSIVE ═══════════════════ */
+@media(max-width:1100px){
+  .foot-inner{grid-template-columns:1fr 1fr;gap:2rem;}
+}
 @media(max-width:900px){
-  .nav-links{display:none;}
-  .btn-discord.desktop{display:none;}
-  .hamburger{display:flex;align-items:center;justify-content:center;}
+  .nav-links,.nav-search-btn,.btn-discord.desktop{display:none;}
+  .hamburger{display:flex;}
   .ticket-wrap{grid-template-columns:1fr;}
   .ticket-info{border-right:none;border-bottom:1px solid var(--border);}
-  .foot-inner{grid-template-columns:1fr 1fr;}
+  .hero-stats{border-radius:8px;}
+  .stat{padding:1.2rem 1.6rem;}
 }
 @media(max-width:600px){
-  .hero h1{letter-spacing:-.02em;}
+  .hero h1{letter-spacing:-.01em;}
   .foot-inner{grid-template-columns:1fr;}
   .form-row{grid-template-columns:1fr;}
+  .catalog-grid{grid-template-columns:1fr;}
   .steps-grid{grid-template-columns:1fr 1fr;}
-  .step{border-right:none;border-bottom:1px solid var(--border);}
+  .hero-stats{flex-direction:column;}
+  .stat{border-right:none;border-bottom:1px solid var(--border);}
+  .stat:last-child{border-bottom:none;}
+  .tracker-header{flex-direction:column;align-items:flex-start;}
+  .tracker-search input{width:100%;}
 }
 </style>
 </head>
 <body>
 
-<!-- Mobile overlay -->
+<!-- PAGE LOADER -->
+<div class="page-loader" id="pageLoader">
+  <div class="loader-logo">NOVA</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-text">Preparando Café... ☕</div>
+</div>
+
+<!-- ATMOSPHERIC BG -->
+<div class="bg-canvas">
+  <div class="bg-orb o1"></div>
+  <div class="bg-orb o2"></div>
+  <div class="bg-orb o3"></div>
+</div>
+<div class="bg-grid"></div>
+<div class="bg-noise"></div>
+
+<!-- TOAST STACK -->
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- COMMAND PALETTE -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="cmdClose(event)">
+  <div class="cmd-box">
+    <div class="cmd-input-wrap">
+      <i class="fas fa-search"></i>
+      <input class="cmd-input" id="cmdInput" placeholder="Buscar serviços, páginas, ações..." autocomplete="off" oninput="cmdFilter(this.value)" onkeydown="cmdKey(event)">
+    </div>
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navegar</span>
+      <span><kbd>↵</kbd> abrir</span>
+      <span><kbd>Esc</kbd> fechar</span>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE OVERLAY / DRAWER -->
 <div class="mob-overlay" id="mobOverlay" onclick="closeMob()"></div>
 <div class="mob-menu" id="mobMenu">
   <div class="mob-header">
     <span class="mob-logo">NOVA</span>
-    <button class="mob-close" onclick="closeMob()">✕</button>
+    <button class="mob-close" onclick="closeMob()"><i class="fas fa-times"></i></button>
   </div>
   <div class="mob-links">
-    <a href="#catalog" onclick="closeMob()">Catálogo</a>
-    <a href="#how-to-buy" onclick="closeMob()">Como Comprar</a>
-    <a href="#ticket-section" onclick="closeMob()">Ticket</a>
-    <a href="#ticket-tracker" onclick="closeMob()">Acompanhar</a>
-    <a href="#team" onclick="closeMob()">Equipe</a>
-    <a href="#status" onclick="closeMob()">Status</a>
-    <a href="https://discord.gg/Szqbsd4TNa" target="_blank" rel="noopener" style="color:var(--amber);border-color:rgba(232,168,76,.25);margin-top:.5rem;">Discord ↗</a>
+    <a href="#catalog" onclick="closeMob()"><i class="fas fa-clipboard"></i>Catálogo</a>
+    <a href="#how-to-buy" onclick="closeMob()"><i class="fas fa-route"></i>Como Comprar</a>
+    <a href="#ticket-section" onclick="closeMob()"><i class="fas fa-ticket"></i>Abrir Ticket</a>
+    <a href="#ticket-tracker" onclick="closeMob()"><i class="fas fa-check"></i>Acompanhar</a>
+    <a href="#reviews" onclick="closeMob()"><i class="fas fa-star"></i>Avaliações</a>
+    <a href="#team" onclick="closeMob()"><i class="fas fa-users"></i>Equipe</a>
+    <a href="#status" onclick="closeMob()"><i class="fas fa-circle-dot"></i>Status</a>
+  </div>
+  <div class="mob-discord">
+    <a href="https://discord.gg/Szqbsd4TNa" target="_blank" rel="noopener">
+      <i class="fa-brands fa-discord"></i>Entrar no Discord ↗
+    </a>
   </div>
 </div>
 
 <!-- NAV -->
-<nav>
+<nav id="mainNav">
   <div class="nav-inner">
     <a href="#" class="logo">
-      <img src="https://media.discordapp.net/attachments/1363677152800800961/1500640598548287618/content.png?ex=69f92bf7&is=69f7da77&hm=f1b661887c119d3b974032db6b8a7ed566e6024894a436272ac51e74412839d1&=&format=webp&quality=lossless&width=788&height=788" alt="">
+      <img class="logo-img" src="https://media.discordapp.net/attachments/1492257556905857246/1508962267922960535/content.png?ex=6a17721f&is=6a16209f&hm=95e73ec1d342329f3546f8236643d1f7b93eb6afcfe0afa313f4ef201c0ceec1&=&format=webp&quality=lossless" alt="Nova">
       <span class="logo-name"><em>Nova</em> Community</span>
-      <span class="logo-badge">v2.1</span>
+      <span class="logo-badge">v2.7</span>
     </a>
     <div class="nav-links">
       <a href="#catalog">Catálogo</a>
       <a href="#how-to-buy">Como Comprar</a>
       <a href="#ticket-section">Ticket</a>
       <a href="#ticket-tracker">Acompanhar</a>
+      <a href="#reviews">Avaliações</a>
       <a href="#team">Equipe</a>
       <a href="#status">Status</a>
     </div>
-    <a href="https://discord.gg/Szqbsd4TNa" target="_blank" class="btn-discord desktop">
-      <i class="fa-brands fa-discord"></i>
-      Discord
-    </a>
-    <button class="hamburger" onclick="openMob()">☰</button>
+    <div class="nav-right">
+      <button class="nav-search-btn" onclick="cmdOpen()" title="Busca rápida (Ctrl+K)">
+        <i class="fas fa-search"></i>
+        Buscar
+        <kbd>Ctrl + K</kbd>
+      </button>
+      <a href="https://discord.gg/Szqbsd4TNa" target="_blank" class="btn-discord desktop">
+        <i class="fa-brands fa-discord"></i>Discord
+      </a>
+      <button class="hamburger" onclick="openMob()"><i class="fas fa-bars"></i></button>
+    </div>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ═══════════ HERO ═══════════ -->
 <section class="hero">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-badge"><span class="dot"></span> Serviços Premium — Gacha Games</div>
-  <h1>
-    NOVA
-    <span class="line2">Community</span>
-  </h1>
-  <p class="hero-sub">Performance. Qualidade. Segurança. Serviços para seus jogos favoritos, feitos por especialistas.</p>
-  <div class="hero-ctas">
-    <a href="#catalog" class="cta-primary">Ver Catálogo</a>
-    <a href="#ticket-section" class="cta-ghost">Abrir Ticket</a>
-  </div>
-  <div class="hero-stats">
-    <div class="stat"><div class="stat-n">5★</div><div class="stat-l">Avaliação</div></div>
-    <div class="stat"><div class="stat-n">48h</div><div class="stat-l">Entrega Máx.</div></div>
-    <div class="stat"><div class="stat-n">5</div><div class="stat-l">Jogos</div></div>
-    <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Segurança</div></div>
-  </div>
-</section>
-
-<!-- CATALOG -->
-<section id="catalog">
-  <div class="s-wrap">
-    <div class="s-tag">Catálogo</div>
-    <h2 class="s-h2">Nossos <em>Serviços</em></h2>
-    <p class="s-sub">Todos os produtos disponíveis. Clique para ver a tabela completa de preços.</p>
-
-    <div class="catalog-grid">
-
-      <div class="c-card" onclick="openProduct('genshin')">
-        <div class="c-img">
-          <img src="https://fastcdn.hoyoverse.com/content-v2/plat/162828/c50d8c6e2597e9f88a66e06c3c32c5c5_8400293576027107227.jpg" alt="Genshin Impact">
-          <div class="c-img-overlay"></div>
-        </div>
-        <div class="c-body">
-          <div class="c-tag-row">
-            <span class="c-game-tag">Genshin Impact</span>
-            <span class="c-status on">Disponível</span>
-          </div>
-          <div class="c-title">Genshin Impact: Manual</div>
-          <div class="c-desc">Exploração, missões, ascensão, Abismo e muito mais. Catálogo completo.</div>
-          <div class="c-footer">
-            <div class="c-price">R$ 1,00 <small>/ serviço</small></div>
-            <button class="btn-view">Ver Preços</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="c-card" onclick="openProduct('genshinsc')">
-        <div class="c-img">
-          <img src="https://onpoplife.com.br/wp-content/uploads/2026/01/Key-Art_EN.jpg" alt="Genshin Script">
-          <div class="c-img-overlay"></div>
-        </div>
-        <div class="c-body">
-          <div class="c-tag-row">
-            <span class="c-game-tag">Genshin Impact</span>
-            <span class="c-status on">Disponível</span>
-          </div>
-          <div class="c-title">Genshin Impact: Script</div>
-          <div class="c-desc">Mesma qualidade, preços mais acessíveis. Serviços automatizados com segurança.</div>
-          <div class="c-footer">
-            <div class="c-price">R$ 0,50 <small>/ serviço</small></div>
-            <button class="btn-view">Ver Preços</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="c-card" onclick="openProduct('zzz')">
-        <div class="c-img">
-          <img src="https://onpoplife.com.br/wp-content/uploads/2025/12/2.5-kv-capa.jpg" alt="ZZZ">
-          <div class="c-img-overlay"></div>
-        </div>
-        <div class="c-body">
-          <div class="c-tag-row">
-            <span class="c-game-tag">Zenless Zone Zero</span>
-            <span class="c-status on">Disponível</span>
-          </div>
-          <div class="c-title">Zenless Zone Zero</div>
-          <div class="c-desc">Policromos, missões, end-game e cuidados com conta. Serviço premium.</div>
-          <div class="c-footer">
-            <div class="c-price">R$ 2,00 <small>/ serviço</small></div>
-            <button class="btn-view">Ver Preços</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="c-card" onclick="openProduct('hsr')">
-        <div class="c-img">
-          <img src="https://webstatic.hoyoverse.com/upload/op-public/2023/09/14/3c862d085db721a5625b6e12649399bc_8067514115196038699.png" alt="HSR">
-          <div class="c-img-overlay"></div>
-        </div>
-        <div class="c-body">
-          <div class="c-tag-row">
-            <span class="c-game-tag">Honkai: Star Rail</span>
-            <span class="c-status on">Disponível</span>
-          </div>
-          <div class="c-title">Honkai: Star Rail</div>
-          <div class="c-desc">Stellar Jade, end-game, exploração, universo simulado e muito mais.</div>
-          <div class="c-footer">
-            <div class="c-price">R$ 5,00 <small>/ serviço</small></div>
-            <button class="btn-view">Ver Preços</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="c-card" onclick="openProduct('wuwa')">
-        <div class="c-img">
-          <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/05/wuthering_waves_banner_schedule.jpg" alt="WuWa">
-          <div class="c-img-overlay"></div>
-        </div>
-        <div class="c-body">
-          <div class="c-tag-row">
-            <span class="c-game-tag">Wuthering Waves</span>
-            <span class="c-status on">Disponível</span>
-          </div>
-          <div class="c-title">Wuthering Waves</div>
-          <div class="c-desc">Exploração completa, astrites, Tower of Adversity e builds otimizadas.</div>
-          <div class="c-footer">
-            <div class="c-price">R$ 1,50 <small>/ serviço</small></div>
-            <button class="btn-view">Ver Preços</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="c-card locked">
-        <div class="c-img">
-          <img src="https://endfield.wiki.gg/images/Arknights_Endfield_Cover_Art.png" alt="Endfield">
-          <div class="c-img-overlay"></div>
-        </div>
-        <div class="c-body">
-          <div class="c-tag-row">
-            <span class="c-game-tag">Arknights</span>
-            <span class="c-status soon">Em Breve</span>
-          </div>
-          <div class="c-title">Arknights: Endfield</div>
-          <div class="c-desc">Serviços premium em desenvolvimento. Em breve disponível.</div>
-          <div class="c-footer">
-            <div class="c-price" style="color:var(--muted);">—</div>
-            <span class="btn-locked">Bloqueado</span>
-          </div>
-        </div>
-      </div>
-
+  <div class="hero-content">
+    <div class="hero-badge fade-in"><span class="dot"></span> Serviços Premium — Gacha Games</div>
+    <h1 class="fade-in fade-in-delay-1">
+      NOVA
+      <span class="line2">Community</span>
+    </h1>
+    <p class="hero-sub fade-in fade-in-delay-2">Performance. Qualidade. Segurança.<br>Serviços para seus jogos favoritos, feitos por especialistas.</p>
+    <div class="hero-ctas fade-in fade-in-delay-3">
+      <a href="#catalog" class="cta-primary">Ver Catálogo</a>
+      <a href="#ticket-section" class="cta-ghost">Abrir Ticket</a>
+    </div>
+    <div class="hero-stats fade-in fade-in-delay-4">
+      <div class="stat"><div class="stat-n">5★</div><div class="stat-l">Avaliação</div></div>
+      <div class="stat"><div class="stat-n">48h</div><div class="stat-l">Resposta Máx.</div></div>
+      <div class="stat"><div class="stat-n">6</div><div class="stat-l">Jogos</div></div>
+      <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Segurança</div></div>
     </div>
   </div>
 </section>
 
-<!-- HOW TO BUY -->
-<section id="how-to-buy" style="border-top:1px solid var(--border);">
+<!-- ═══════════ CATALOG ═══════════ -->
+<hr class="section-divider">
+<section id="catalog">
   <div class="s-wrap">
-    <div class="s-tag">Processo</div>
-    <h2 class="s-h2">Como <em>Comprar</em></h2>
-    <p class="s-sub">Quatro passos simples para ter seu serviço entregue com qualidade e segurança.</p>
-    <div class="steps-grid">
-      <div class="step">
+    <div class="s-tag fade-in">Catálogo</div>
+    <h2 class="s-h2 fade-in fade-in-delay-1">Nossos <em>Serviços</em></h2>
+    <p class="s-sub fade-in fade-in-delay-2">Todos os produtos disponíveis. Clique para ver a tabela completa de preços e detalhes.</p>
+
+    <div class="catalog-grid stagger" id="catalogGrid">
+      <!-- Cards injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ HOW TO BUY ═══════════ -->
+<hr class="section-divider">
+<section id="how-to-buy">
+  <div class="s-wrap">
+    <div class="s-tag fade-in">Processo</div>
+    <h2 class="s-h2 fade-in fade-in-delay-1">Como <em>Comprar</em></h2>
+    <p class="s-sub fade-in fade-in-delay-2">Cinco passos simples para ter seu serviço entregue com qualidade e segurança.</p>
+    <div class="steps-grid stagger">
+      <div class="step fade-in">
         <div class="step-num">01</div>
         <div class="step-title">Escolha o Serviço</div>
-        <div class="step-desc">Navegue pelo catálogo acima e clique em "Ver Preços" para conferir o valor exato do que precisa.</div>
+        <div class="step-desc">Navegue pelo catálogo e clique em "Ver Preços" para conferir o valor exato do que precisa.</div>
       </div>
-      <div class="step">
+      <div class="step fade-in">
         <div class="step-num">02</div>
         <div class="step-title">Aceite os Termos</div>
         <div class="step-desc">Leia e concorde com nossos termos. Ao contratar, você confirma estar ciente das regras.</div>
       </div>
-      <div class="step">
+      <div class="step fade-in">
         <div class="step-num">03</div>
         <div class="step-title">Abra um Ticket</div>
-        <div class="step-desc">Use o formulário abaixo ou acesse nosso Discord. Preencha os dados do serviço solicitado.</div>
+        <div class="step-desc">Use o formulário abaixo ou acesse nosso Discord. Preencha os dados do serviço desejado.</div>
       </div>
-      <div class="step">
+      <div class="step fade-in">
         <div class="step-num">04</div>
+        <div class="step-title">Atendimento</div>
+        <div class="step-desc">Nossa equipe assume e atende em até 48h.</div>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">05</div>
         <div class="step-title">Receba o Serviço</div>
-        <div class="step-desc">Nossa equipe assume em até 48h e entrega com a qualidade Nova Community.</div>
+        <div class="step-desc">Entregamos o pedido solicitado com qualidade Nova Community.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TICKET SYSTEM -->
+<!-- ═══════════ TICKET SYSTEM ═══════════ -->
+<hr class="section-divider">
 <section id="ticket-section">
   <div class="s-wrap">
-    <div class="s-tag">Suporte</div>
-    <h2 class="s-h2">Abrir <em>Ticket</em></h2>
-    <p class="s-sub">Preencha o formulário abaixo ou abra um ticket diretamente no nosso Discord.</p>
-    <div class="ticket-wrap">
+    <div class="s-tag fade-in">Suporte</div>
+    <h2 class="s-h2 fade-in fade-in-delay-1">Abrir <em>Ticket</em></h2>
+    <p class="s-sub fade-in fade-in-delay-2">Preencha o formulário ou abra um ticket diretamente no nosso Discord.</p>
+    <div class="ticket-wrap fade-in">
       <div class="ticket-info">
         <h3>Por que usar nosso sistema?</h3>
-        <p>Nosso sistema de tickets garante rastreabilidade e atendimento organizado. Cada solicitação recebe um ID único e é atribuída a um especialista.</p>
+        <p>Nosso sistema de tickets garante rastreabilidade e atendimento organizado. Cada solicitação recebe um ID único e é atribuída a um especialista dedicado.</p>
         <div class="ticket-features">
-          <div class="t-feat">Resposta em até 48 horas úteis</div>
-          <div class="t-feat">Atendimento personalizado por jogo</div>
-          <div class="t-feat">Histórico completo de solicitações</div>
-          <div class="t-feat">Suporte via Discord integrado</div>
-          <div class="t-feat">Confirmação por e-mail automática</div>
+          <div class="t-feat">
+            <div class="t-feat-icon"><i class="fas fa-clock"></i></div>
+            <div>Resposta em até 48 horas úteis</div>
+          </div>
+          <div class="t-feat">
+            <div class="t-feat-icon"><i class="fas fa-user-gear"></i></div>
+            <div>Atendimento personalizado por jogo</div>
+          </div>
+          <div class="t-feat">
+            <div class="t-feat-icon"><i class="fas fa-history"></i></div>
+            <div>Histórico completo de solicitações</div>
+          </div>
+          <div class="t-feat">
+            <div class="t-feat-icon"><i class="fa-brands fa-discord"></i></div>
+            <div>Suporte via Discord integrado</div>
+          </div>
+          <div class="t-feat">
+            <div class="t-feat-icon"><i class="fas fa-shield"></i></div>
+            <div>ID único e rastreável</div>
+          </div>
+          <div class="t-feat">
+            <div class="t-feat-icon"><i class="fas fa-exclamation"></i></div>
+            <div>Sistema dos Tickets do Site em Implementação. Use o do Discord.</div>
+          </div>
         </div>
-
-        <div style="margin-top:2rem;padding:1.2rem;background:var(--bg2);border:1px solid var(--border);border-radius:4px;">
-          <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:.6rem;">Prefere o Discord?</div>
-          <p style="font-size:.8rem;color:var(--dim);line-height:1.5;margin-bottom:.8rem;">Todos os tickets também podem ser abertos diretamente no nosso servidor oficial.</p>
-          <a href="https://discord.gg/Szqbsd4TNa" target="_blank" class="btn-discord" style="display:inline-flex;text-decoration:none;">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-            Ir para o Discord
+        <div class="discord-box">
+          <div class="discord-box-label">Prefere o Discord?</div>
+          <p>Todos os tickets também podem ser abertos diretamente no nosso servidor oficial.</p>
+          <a href="https://discord.gg/Szqbsd4TNa" target="_blank" rel="noopener" class="btn-discord" style="display:inline-flex;text-decoration:none;">
+            <i class="fa-brands fa-discord"></i>Ir para o Discord
           </a>
         </div>
       </div>
-
       <div class="ticket-form">
-        <h3>Nova Solicitação (Sistema em Implementação)</h3>
+        <h3>Nova Solicitação</h3>
         <div class="form-row">
           <div class="form-group">
-            <label>Nome / Discord</label>
-            <input type="text" id="f-name" placeholder="seu_usuario#0000">
+            <label>Nome / Discord *</label>
+            <input type="text" id="f-name" placeholder="seu_usuario">
           </div>
           <div class="form-group">
             <label>Contato (opcional)</label>
@@ -730,162 +1236,197 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:4rem 0 0;
           </div>
         </div>
         <div class="form-group">
-          <label>Jogo</label>
+          <label>Jogo *</label>
           <select id="f-game">
             <option value="">Selecione o jogo...</option>
             <option value="Genshin Impact (Manual)">Genshin Impact — Manual</option>
             <option value="Genshin Impact (Script)">Genshin Impact — Script</option>
-            <option value="Zenless Zone Zero">Zenless Zone Zero</option>
-            <option value="Honkai: Star Rail">Honkai: Star Rail</option>
-            <option value="Wuthering Waves">Wuthering Waves</option>
+            <option value="Zenless Zone Zero (Manual)">Zenless Zone Zero — Manual</option>
+            <option value="Zenless Zone Zero (Script)">Zenless Zone Zero — Script</option>
+            <option value="Honkai: Star Rail (Manual)">Honkai: Star Rail — Manual</option>
+            <option value="Honkai: Star Rail (Script)">Honkai: Star Rail — Script</option>
+            <option value="Wuthering Waves (Manual)">Wuthering Waves — Manual</option>
+            <option value="Wuthering Waves (Script)">Wuthering Waves — Script</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Serviço desejado</label>
-          <input type="text" id="f-service" placeholder="Ex: Exploração Natlan, Farm set, etc.">
+          <label>Serviço desejado *</label>
+          <input type="text" id="f-service" placeholder="Ex: Exploração Natlan, Farm set, Abismo...">
+        </div>
+        <div class="form-group">
+          <label>Prioridade</label>
+          <div class="priority-select" id="prioritySelect">
+            <button class="priority-btn p-low active" onclick="setPriority('low',this)">Normal</button>
+            <button class="priority-btn p-high" onclick="setPriority('high',this)">Alta</button>
+          </div>
         </div>
         <div class="form-group">
           <label>Detalhes adicionais</label>
-          <textarea id="f-details" placeholder="Informe o máximo de detalhes possível: nível da conta, progresso atual, prazo desejado..."></textarea>
+          <textarea id="f-details" placeholder="Nível da conta, progresso atual, prazo desejado..." oninput="updateCharCount(this)" maxlength="800"></textarea>
+          <span class="char-counter" id="charCounter">0 / 800</span>
         </div>
-        <div class="form-group" style="display:flex;align-items:center;gap:8px;">
-          <input type="checkbox" id="f-terms" style="width:auto;accent-color:var(--amber);">
-          <label for="f-terms" style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);cursor:pointer;">
+        <div class="form-group" style="display:flex;align-items:center;gap:9px;">
+          <input type="checkbox" id="f-terms" style="width:auto;accent-color:var(--amber);width:16px;height:16px;">
+          <label for="f-terms" style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);cursor:pointer;margin:0;">
             Li e aceito os <a href="#" onclick="openTerms();return false;" style="color:var(--amber);">Termos de Compra</a>
           </label>
         </div>
-        <button class="btn-ticket" onclick="submitTicket()">Enviar Solicitação →</button>
+        <div class="typing-indicator" id="typingIndicator">
+          <div class="typing-dots"><span></span><span></span><span></span></div>
+          Processando solicitação...
+        </div>
+        <button class="btn-ticket" id="btnTicket" onclick="submitTicket()">Enviar Solicitação →</button>
         <div class="form-msg" id="form-msg"></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TICKET TRACKER -->
-<section id="ticket-tracker" style="border-top:1px solid var(--border);">
+<!-- ═══════════ TICKET TRACKER ═══════════ -->
+<hr class="section-divider">
+<section id="ticket-tracker">
   <div class="s-wrap">
-    <div class="s-tag">Acompanhamento (Sistema em Implementação)</div>
-    <h2 class="s-h2">Meus <em>Tickets</em></h2>
-    <p class="s-sub">Acompanhe o status dos seus tickets abertos. Insira seu ID ou nome para filtrar.</p>
-    <div class="tracker-wrap">
+    <div class="s-tag fade-in">Acompanhamento</div>
+    <h2 class="s-h2 fade-in fade-in-delay-1">Meus <em>Tickets</em></h2>
+    <p class="s-sub fade-in fade-in-delay-2">Acompanhe o status dos seus tickets. Filtre por status ou busque pelo ID.</p>
+    <div class="tracker-wrap fade-in">
       <div class="tracker-header">
-        <div style="font-family:var(--mono);font-size:.72rem;color:var(--dim);letter-spacing:.08em;">
-          Tickets recentes desta sessão
+        <div class="tracker-filters">
+          <button class="filter-chip active" onclick="filterTickets('all',this)">Todos</button>
+          <button class="filter-chip" onclick="filterTickets('Aguardando',this)">Aguardando</button>
+          <button class="filter-chip" onclick="filterTickets('Em Andamento',this)">Em Andamento</button>
+          <button class="filter-chip" onclick="filterTickets('Concluído',this)">Concluídos</button>
         </div>
         <div class="tracker-search">
-          <input type="text" id="tracker-input" placeholder="Buscar por ID ou nome...">
-          <button class="btn-track" onclick="filterTickets()">Filtrar</button>
+          <input type="text" id="tracker-input" placeholder="Buscar por ID ou nome..." oninput="searchTickets(this.value)">
+          <button class="btn-track" onclick="searchTickets(document.getElementById('tracker-input').value)">Buscar</button>
         </div>
       </div>
       <div class="tickets-list" id="tickets-list">
-        <div class="tracker-empty" id="tracker-empty">Nenhum ticket aberto nesta sessão ainda.</div>
+        <div class="tracker-empty" id="tracker-empty">
+          <div class="tracker-empty-icon">🎫</div>
+          <h4>Nenhum Ticket</h4>
+          <p>Abra um ticket acima para começar a acompanhar.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STATUS -->
-<section id="status" style="border-top:1px solid var(--border);">
+<!-- ═══════════ REVIEWS ═══════════ -->
+<hr class="section-divider">
+<section id="reviews">
   <div class="s-wrap">
-    <div class="s-tag">Sistema</div>
-    <h2 class="s-h2">Status <em>Operacional</em></h2>
-    <p class="s-sub">Monitoramento em tempo real dos nossos serviços. Última atualização: 10/04.</p>
-    <div class="status-bar">
+    <div class="s-tag fade-in">Feedbacks</div>
+    <h2 class="s-h2 fade-in fade-in-delay-1">O que nossos <em>Clientes</em> dizem</h2>
+    <p class="s-sub fade-in fade-in-delay-2">Avaliações reais de clientes satisfeitos com nossos serviços premium.</p>
+    <div class="reviews-grid stagger" id="reviewsGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════ STATUS ═══════════ -->
+<hr class="section-divider">
+<section id="status">
+  <div class="s-wrap">
+    <div class="s-tag fade-in">Sistema</div>
+    <h2 class="s-h2 fade-in fade-in-delay-1">Status <em>Operacional</em></h2>
+    <p class="s-sub fade-in fade-in-delay-2">Monitoramento em tempo real dos nossos serviços. Atualizado automaticamente.</p>
+    <div class="status-bar fade-in">
       <div class="status-item">
-        <span class="s-dot-green"></span>
+        <span class="s-dot green"></span>
         <div>
           <div class="status-item-label">Plataforma Web</div>
           <div class="status-item-val">Operacional</div>
         </div>
       </div>
       <div class="status-item">
-        <span class="s-dot-green"></span>
+        <span class="s-dot green"></span>
         <div>
-          <div class="status-item-label">Scripts</div>
-          <div class="status-item-val">Operacional · Seguros</div>
+          <div class="status-item-label">Script On</div>
+          <div class="status-item-val">Em todos os jogos 💚</div>
         </div>
       </div>
       <div class="status-item">
-        <span class="s-dot-green"></span>
+        <span class="s-dot green"></span>
         <div>
-          <div class="status-item-label">Discord</div>
-          <div class="status-item-val">Online</div>
+          <div class="status-item-label">Scripts em Update/Detected</div>
+          <div class="status-item-val">Nenhum 💚</div>
         </div>
       </div>
       <div class="status-item">
-        <span class="s-dot-amber"></span>
+        <span class="s-dot amber"></span>
         <div>
           <div class="status-item-label">Fila de Tickets</div>
-          <div class="status-item-val" style="color:var(--amber);">15–45 min de resposta</div>
+          <div class="status-item-val amber">15–45 min de resposta</div>
         </div>
       </div>
-      <div class="status-item">
-        <span class="s-dot-green"></span>
-        <div>
-          <div class="status-item-label">Genshin Impact</div>
-          <div class="status-item-val">Disponível</div>
-        </div>
       </div>
-      <div class="status-item">
-        <span class="s-dot-green"></span>
-        <div>
-          <div class="status-item-label">ZZZ · HSR · WuWa</div>
-          <div class="status-item-val">Disponível</div>
-        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TEAM -->
-<section id="team" style="border-top:1px solid var(--border);">
+<!-- ═══════════ TEAM ═══════════ -->
+<hr class="section-divider">
+<section id="team">
   <div class="s-wrap">
-    <div class="s-tag">Colaboradores</div>
-    <h2 class="s-h2">Gestão <em>Principal</em></h2>
-    <p class="s-sub">As pessoas por trás dos serviços. Especialistas dedicados à sua experiência.</p>
-    <div class="team-grid">
-      <div class="t-card owner">
-        <img src="https://i.pinimg.com/736x/4a/b7/8c/4ab78c7c98b74b1909ca148bb60401aa.jpg" class="t-avatar" alt="">
+    <div class="s-tag fade-in">Colaboradores</div>
+    <h2 class="s-h2 fade-in fade-in-delay-1">Gestão <em>Principal</em></h2>
+    <p class="s-sub fade-in fade-in-delay-2">As pessoas por trás dos serviços. Especialistas dedicados à sua experiência.</p>
+    <div class="team-grid stagger">
+      <div class="t-card owner fade-in">
+        <div class="t-avatar-wrap">
+          <img src="https://i.pinimg.com/736x/4a/b7/8c/4ab78c7c98b74b1909ca148bb60401aa.jpg" class="t-avatar" alt="wz.foxyyy">
+          <div class="t-avatar-ring"></div>
+        </div>
         <div class="t-name">wz.foxyyy</div>
-        <span class="t-role">Owner</span>
+        <span class="t-role">Owner¹</span>
       </div>
-      <div class="t-card owner">
-        <img src="https://i.pinimg.com/736x/a6/af/01/a6af011c59447e0c4a58a1cca2b79a65.jpg" class="t-avatar" alt="">
+      <div class="t-card owner fade-in">
+        <div class="t-avatar-wrap">
+          <img src="https://i.pinimg.com/736x/a6/af/01/a6af011c59447e0c4a58a1cca2b79a65.jpg" class="t-avatar" alt="ventisfavone">
+          <div class="t-avatar-ring"></div>
+        </div>
         <div class="t-name">ventisfavone</div>
-        <span class="t-role">Sub Owner</span>
+        <span class="t-role">Owner²</span>
+      </div>
+      <div class="t-card owner fade-in">
+        <div class="t-avatar-wrap">
+          <img src="https://i.pinimg.com/736x/8f/af/18/8faf184a8230d3b4eca82476cf069432.jpg" class="t-avatar" alt="kitcattxam0eba">
+          <div class="t-avatar-ring"></div>
+        </div>
+        <div class="t-name">kitcattxam0eba</div>
+        <span class="t-role">Staff</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ═══════════ FOOTER ═══════════ -->
 <footer>
   <div class="foot-inner">
     <div class="foot-brand">
-      <a href="#" class="logo" style="margin-bottom:.7rem;">
-        <img src="https://media.discordapp.net/attachments/1363677152800800961/1500640598548287618/content.png?ex=69f92bf7&is=69f7da77&hm=f1b661887c119d3b974032db6b8a7ed566e6024894a436272ac51e74412839d1&=&format=webp&quality=lossless&width=788&height=788" alt="">
+      <a href="#" class="logo" style="margin-bottom:.8rem;">
+        <img class="logo-img" src="https://media.discordapp.net/attachments/1492257556905857246/1508962267922960535/content.png?ex=6a17721f&is=6a16209f&hm=95e73ec1d342329f3546f8236643d1f7b93eb6afcfe0afa313f4ef201c0ceec1&=&format=webp&quality=lossless" alt="">
         <span class="logo-name"><em>Nova</em> Community</span>
       </a>
-      <p>Serviços premium para gacha games com qualidade e segurança.</p>
+      <p>Serviços premium para gacha games com qualidade, segurança e excelência.</p>
       <div class="socials">
-        <a href="https://discord.gg/Szqbsd4TNa" class="soc-btn" title="Discord">
-          <i class="fa-brands fa-discord"></i>
-        </a>
-        <a href="https://www.tiktok.com/@novacommunitydc" class="soc-btn" title="TikTok">
-          <i class="fa-brands fa-tiktok"></i>
-        </a>
-        <a href="https://www.instagram.com/novacommunitydc/" class="soc-btn" title="Instagram">
-          <i class="fa-brands fa-instagram"></i>
-        </a>
+        <a href="https://discord.gg/Szqbsd4TNa" class="soc-btn" title="Discord"><i class="fa-brands fa-discord"></i></a>
+        <a href="https://www.tiktok.com/@novacommunitydc" class="soc-btn" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://www.instagram.com/novacommunitydc/" class="soc-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
       </div>
     </div>
     <div class="foot-col">
       <h5>Catálogo</h5>
       <ul>
-        <li><a href="#" onclick="openProduct('genshin');return false;">Genshin Impact</a></li>
-        <li><a href="#" onclick="openProduct('zzz');return false;">Zenless Zone Zero</a></li>
-        <li><a href="#" onclick="openProduct('hsr');return false;">Honkai: Star Rail</a></li>
-        <li><a href="#" onclick="openProduct('wuwa');return false;">Wuthering Waves</a></li>
+        <li><a href="#" onclick="openProduct('genshin');return false;">Genshin Impact — Manual</a></li>
+        <li><a href="#" onclick="openProduct('genshinsc');return false;">Genshin Impact — Script</a></li>
+        <li><a href="#" onclick="openProduct('zzz');return false;">Zenless Zone Zero — Manual & Script</a></li>
+        <li><a href="#" onclick="openProduct('hsr');return false;">Honkai: Star Rail — Manual & Script</a></li>
+        <li><a href="#" onclick="openProduct('wuwa');return false;">Wuthering Waves — Manual</a></li>
+        <li><a href="#" onclick="openProduct('wuwasc');return false;">Wuthering Waves — Script</a></li>
+
       </ul>
     </div>
     <div class="foot-col">
@@ -898,210 +1439,564 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:4rem 0 0;
       </ul>
     </div>
     <div class="foot-col">
-      <h5>Sobre</h5>
+      <h5>Legal</h5>
       <ul>
-        <li><a href="#team">Equipe</a></li>
         <li><a href="#" onclick="openTerms();return false;">Termos de Compra</a></li>
-        <li><a href="#how-to-buy">Como Comprar</a></li>
-        <li><a href="#status">Status do Sistema</a></li>
+        <li><a href="#" onclick="openTerms();return false;">Política de Privacidade</a></li>
+        <li><a href="#" onclick="openTerms();return false;">Reembolsos</a></li>
       </ul>
     </div>
   </div>
   <div class="foot-bottom">
-    <p>© 2025–2026 NOVA COMMUNITY — TODOS OS DIREITOS RESERVADOS.</p>
-    <div class="ver-badge"><span class="ver-dot"></span> V2.1.5</div>
+    <p>© 2025 - 2026 Nova Community. Todos os direitos reservados.</p>
+    <div class="ver-badge"><span class="ver-dot"></span>v2.7.0</div>
   </div>
 </footer>
 
 <!-- PRODUCT MODAL -->
-<div class="pmodal" id="productModal" onclick="e => e.target===this && closeModal()">
-  <div class="pmodal-box" id="productModalBox">
-    <div class="pmodal-head">
-      <div class="pmodal-title" id="modalTitle">—</div>
-      <button class="pmodal-close" onclick="closeModal()">✕</button>
+<div class="modal-overlay" id="productModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">Produto</div>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
     </div>
     <div id="modalBody"></div>
   </div>
 </div>
 
 <!-- TERMS MODAL -->
-<div class="pmodal" id="termsModal">
-  <div class="pmodal-box">
-    <div class="pmodal-head">
-      <div class="pmodal-title">Termos de Compra</div>
-      <button class="pmodal-close" onclick="document.getElementById('termsModal').classList.remove('open')">✕</button>
+<div class="modal-overlay" id="termsModal">
+  <div class="modal-box" style="max-width:600px;">
+    <div class="modal-head">
+      <div class="modal-title">Termos de Compra</div>
+      <button class="modal-close" onclick="closeTerms()"><i class="fas fa-times"></i></button>
     </div>
-    <div class="pmodal-body" style="padding:1.5rem;">
-      <div style="display:flex;flex-direction:column;gap:1rem;">
-        <div style="padding:1rem 1.2rem;background:var(--bg2);border:1px solid var(--border);border-radius:4px;border-left:2px solid var(--amber);">
-          <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:.4rem;">Pagamentos e Início</div>
-          <p style="font-size:.82rem;color:var(--dim);line-height:1.5;">Prazo padrão de até 48h após confirmação do pagamento. Pressões indevidas não serão toleradas.</p>
-        </div>
-        <div style="padding:1rem 1.2rem;background:var(--bg2);border:1px solid var(--border);border-radius:4px;border-left:2px solid var(--amber);">
-          <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:.4rem;">Reembolsos</div>
-          <p style="font-size:.82rem;color:var(--dim);line-height:1.5;">Arrependimentos não são reembolsáveis. Reembolsos ocorrem apenas em falha comprovada da equipe.</p>
-        </div>
-        <div style="padding:1rem 1.2rem;background:var(--bg2);border:1px solid var(--border);border-radius:4px;border-left:2px solid var(--amber);">
-          <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:.4rem;">Atendimento</div>
-          <p style="font-size:.82rem;color:var(--dim);line-height:1.5;">Exclusivamente via tickets do Discord. Mensagens privadas à equipe serão ignoradas. Atendimento por ordem de chegada.</p>
-        </div>
-        <div style="padding:1rem 1.2rem;background:var(--bg2);border:1px solid var(--border);border-radius:4px;border-left:2px solid var(--amber);">
-          <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:.4rem;">Conduta</div>
-          <p style="font-size:.82rem;color:var(--dim);line-height:1.5;">Respeito mútuo obrigatório. A Nova Community reserva o direito de recusar atendimento em caso de desrespeito.</p>
-        </div>
-        <div style="padding:1rem 1.2rem;background:var(--bg2);border:1px solid var(--border);border-radius:4px;border-left:2px solid var(--amber);">
-          <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:.4rem;">Responsabilidade</div>
-          <p style="font-size:.82rem;color:var(--dim);line-height:1.5;">O cliente aceita que o processo pode envolver riscos. Em caso de punição ou banimento, a responsabilidade é inteiramente do comprador.</p>
-        </div>
-      </div>
+    <div class="terms-body">
+      <h4>1. Aceitação dos Termos</h4>
+      <p>Ao contratar qualquer serviço da Nova Community, o cliente declara que leu, compreendeu e concorda com todos os termos descritos abaixo.</p>
+      <h4>2. Serviços Oferecidos</h4>
+      <p>A Nova Community oferece serviços de gameplay assistida para jogos digitais. Todos os serviços são realizados manualmente ou com scripts seguros, de forma responsável.</p>
+      <h4>3. Responsabilidades do Cliente</h4>
+      <ul>
+        <li>Fornecer informações precisas sobre a conta e o serviço desejado;</li>
+        <li>Não divulgar credenciais de acesso a terceiros não autorizados;</li>
+        <li>Aguardar o prazo estabelecido para entrega.</li>
+      </ul>
+      <h4>4. Prazo de Entrega</h4>
+      <p>O prazo padrão é de até 48 horas úteis após a confirmação do pagamento. Prazos podem variar conforme a complexidade do serviço.</p>
+      <h4>5. Política de Reembolso</h4>
+      <p>Reembolsos são analisados caso a caso. Não há garantia de devolução para serviços já iniciados ou concluídos.</p>
+      <h4>6. Segurança</h4>
+      <p>A Nova Community emprega práticas seguras para minimizar riscos. Contudo, o cliente assume os riscos inerentes ao uso de serviços de terceiros em jogos online.</p>
+      <h4>7. Contato</h4>
+      <p>Em caso de dúvidas, entre em contato via Discord ou pelo formulário de tickets desta plataforma.</p>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
 <script>
-const produtos = {
-genshin:{title:"Genshin Impact — Manual",img:"https://fastcdn.hoyoverse.com/content-v2/plat/162828/c50d8c6e2597e9f88a66e06c3c32c5c5_8400293576027107227.jpg",desc:"Serviços Premium de Genshin Impact. (Catálogo Dessincronizado.)",
-sections:[
-{t:"Giros — Exploração Baixa (<70%)",r:[["800 Gemas (5 giros)","R$ 6,00"],["1.600 Gemas (10 giros)","R$ 12,00"],["3.200 Gemas (20 giros)","R$ 23,00"],["4.800 Gemas (30 giros)","R$ 34,00"],["6.400 Gemas (40 giros)","R$ 44,00"],["8.000 Gemas (50 giros)","R$ 54,00"]]},
-{t:"Giros — Exploração Alta (>70%)",r:[["800 Gemas (5 giros)","R$ 7,00"],["1.600 Gemas (10 giros)","R$ 14,00"],["3.200 Gemas (20 giros)","R$ 26,00"],["4.800 Gemas (30 giros)","R$ 37,00"],["6.400 Gemas (40 giros)","R$ 48,00"],["8.000 Gemas (50 giros)","R$ 65,00"]]},
-{t:"Ascensão",r:[["Farm Pers. lvl 20–90","R$ 15,00"],["Up Arma lvl 20–90","R$ 15,00"],["Farm 01 set (status aleatórios)","R$ 2,00"],["Talentos 1→9","R$ 15,00"],["Talentos 9/9/9","R$ 35,00"]]},
-{t:"Missões",r:[["Lendária / Personagens / Encontros","R$ 5,00"],["Missão 76 Aranaras","R$ 45,00"],["Arconte (cada ato)","R$ 10,00"]]},
-{t:"Abismo do Espiral",r:[["Cada Piso","R$ 2,00"],["Piso 01–08","R$ 15,00"],["Lua Abissal","R$ 10,00"]]},
-{t:"Confronto Abissal",r:[["Completo sem Penas","R$ 7,00"],["Completo com Penas","R$ 12,00"],["Completo com Armas 4★/5★","R$ 20,00"]]},
-{t:"Teatro Imaginário",r:[["Fácil","R$ 5,00"],["Médio","R$ 10,00"],["Difícil","R$ 15,00"],["Visionário","R$ 20,00"],["Lunar","R$ 25,00"]]},
-{t:"Extras",r:[["200k Moras","R$ 1,00"],["Arma de Pesca","R$ 14,00"],["Rastro Teatro","R$ 4,00"],["Cada Refino","R$ 7,00"],["TCG Completo","R$ 45,00"],["Farm 50 unid.","R$ 2,00 cada"]]},
-{t:"Build de Personagem",r:[["Básica","R$ 5,00"],["Ótima","R$ 15,00"],["Excelente","R$ 30,00"]]},
-{t:"Oculis",r:[["Anemoculus","R$ 15,00"],["Geoculus","R$ 25,00"],["Electroculus","R$ 40,00"],["Dendroculus (Floresta)","R$ 40,00"],["Dendroculus (Deserto)","R$ 40,00"],["Hydroculus","R$ 50,00"],["Pyroculus","R$ 60,00"],["Lunoculus","R$ 25,00"]]},
-{t:"Exploração",r:[["Mondstadt","R$ 15,00"],["Espinha do Dragão","R$ 25,00"],["Liyue","R$ 35,00"],["Vale Chenyu","R$ 30,00"],["Despenhadeiro","R$ 30,00"],["Minas","R$ 15,00"],["Inazuma","R$ 45,00"],["Enkanomiya","R$ 20,00"],["Sumeru (Floresta)","R$ 55,00"],["Sumeru (Deserto)","R$ 60,00"],["Fontaine","R$ 50,00"],["Mar Antigo","R$ 25,00"],["Natlan","R$ 80,00"],["Montanha Sagrada","R$ 25,00"],["Nod-Krai","R$ 40,00"]]},
-{t:"Eventos",r:[["Evento Simples","R$ 5,00"],["Evento Principal","R$ 15,00"]]},
-{t:"Cuidados com a Conta",r:[["Manutenção Semanal","R$ 5,00"],["Manutenção Mensal","R$ 18,00"],["Manutenção da Versão","R$ 38,00"]]}
-]},
-genshinsc:{title:"Genshin Impact — Script",img:"https://onpoplife.com.br/wp-content/uploads/2026/01/Key-Art_EN.jpg",desc:"Serviços via Script de Genshin Impact. Preços acessíveis, mesma qualidade.",
-sections:[
-{t:"Giros — Exploração Baixa (<70%)",r:[["800 Gemas (5 giros)","R$ 5,00"],["1.600 Gemas (10 giros)","R$ 9,00"],["3.200 Gemas (20 giros)","R$ 17,00"],["4.800 Gemas (30 giros)","R$ 25,00"],["6.400 Gemas (40 giros)","R$ 32,00"],["8.000 Gemas (50 giros)","R$ 40,00"]]},
-{t:"Giros — Exploração Alta (>70%)",r:[["800 Gemas (5 giros)","R$ 5,00"],["1.600 Gemas (10 giros)","R$ 10,00"],["3.200 Gemas (20 giros)","R$ 20,00"],["4.800 Gemas (30 giros)","R$ 30,00"],["6.400 Gemas (40 giros)","R$ 38,00"],["8.000 Gemas (50 giros)","R$ 50,00"]]},
-{t:"Ascensão",r:[["Farm Pers. lvl 20–90","R$ 10,00"],["Up Arma lvl 20–90","R$ 10,00"],["Farm 01 set","R$ 1,00"],["Talentos 1→9","R$ 10,00"],["Talentos 9/9/9","R$ 25,00"]]},
-{t:"Missões",r:[["Lendária / Personagens / Encontros","R$ 2,00"],["Missão 76 Aranaras","R$ 35,00"],["Arconte (cada ato)","R$ 5,00"]]},
-{t:"Abismo do Espiral",r:[["Cada Piso","R$ 1,00"],["Piso 01–08","R$ 10,00"],["Lua Abissal","R$ 7,00"]]},
-{t:"Confronto Abissal",r:[["Completo sem Penas","R$ 5,00"],["Completo com Penas","R$ 8,00"],["Completo com Armas 4★/5★","R$ 10,00"]]},
-{t:"Teatro Imaginário",r:[["Fácil","R$ 5,00"],["Médio","R$ 10,00"],["Difícil","R$ 15,00"],["Visionário","R$ 20,00"],["Lunar","R$ 25,00"]]},
-{t:"Extras",r:[["200k Moras","R$ 0,50"],["Arma de Pesca","R$ 10,00"],["Rastro Teatro","R$ 3,00"],["Cada Refino","R$ 4,00"],["TCG Completo","R$ 35,00"],["Farm 50 unid.","R$ 1,00 cada"]]},
-{t:"Build de Personagem",r:[["Básica","R$ 5,00"],["Ótima","R$ 10,00"],["Excelente","R$ 25,00"]]},
-{t:"Oculis",r:[["Anemoculus","R$ 15,00"],["Geoculus","R$ 25,00"],["Electroculus","R$ 25,00"],["Dendroculus (Floresta)","R$ 25,00"],["Dendroculus (Deserto)","R$ 25,00"],["Hydroculus","R$ 35,00"],["Pyroculus","R$ 45,00"],["Lunoculus","R$ 20,00"]]},
-{t:"Exploração",r:[["Mondstadt","R$ 15,00"],["Espinha do Dragão","R$ 20,00"],["Liyue","R$ 25,00"],["Vale Chenyu","R$ 25,00"],["Despenhadeiro","R$ 25,00"],["Minas","R$ 15,00"],["Inazuma","R$ 35,00"],["Enkanomiya","R$ 20,00"],["Sumeru (Floresta)","R$ 45,00"],["Sumeru (Deserto)","R$ 50,00"],["Fontaine","R$ 35,00"],["Mar Antigo","R$ 15,00"],["Natlan","R$ 70,00"],["Montanha Sagrada","R$ 15,00"],["Nod-Krai","R$ 20,00"]]},
-{t:"Eventos",r:[["Evento Simples","R$ 5,00"],["Evento Principal","R$ 10,00"]]},
-{t:"Cuidados com a Conta",r:[["Manutenção Semanal","R$ 3,00"],["Manutenção Mensal","R$ 20,00"],["Manutenção da Versão","R$ 25,00"]]}
-]},
-zzz:{title:"Zenless Zone Zero",img:"https://onpoplife.com.br/wp-content/uploads/2025/12/2.5-kv-capa.jpg",desc:"Serviços Premium de Zenless Zone Zero.",
-sections:[
-{t:"Policromos",r:[["800 Policromos (5 giros)","R$ 9,00"],["1.600 Policromos (10 giros)","R$ 14,00"],["3.200 Policromos (20 giros)","R$ 24,00"],["4.800 Policromos (30 giros)","R$ 34,00"],["6.400 Policromos (40 giros)","R$ 44,00"],["8.000 Policromos (50 giros)","R$ 54,00"]]},
-{t:"Missões",r:[["Missão principal completa (9 cap.)","R$ 70,00"],["Missão principal (1 cap.)","R$ 10,00"],["Missão secundária (cada)","R$ 2,00"]]},
-{t:"Eventos",r:[["Evento simples","R$ 5,00"],["Evento principal","R$ 20,00"]]},
-{t:"Agentes",r:[["Todas as histórias (18 no total)","R$ 55,00"],["História individual (1)","R$ 5,00"]]},
-{t:"Oficial Miau-Miau",r:[["Por área","R$ 15,00"],["1 página","R$ 6,00"]]},
-{t:"End Games",r:[["Nódulo Estável (Nível 1–10)","R$ 15,00"],["Nódulo de Conflito (Nível 1–8)","R$ 13,00"],["Nódulo Crítico (Nível 1–7)","R$ 12,00"],["Investida Mortal","R$ 20,00"],["Teste de Combate Virtual (por nível)","R$ 2,00"],["Teste de Combate: Sem Saída (por nível)","R$ 3,00"]]},
-{t:"Cidade Definhada",r:[["Área 01 — Metrô da Velha Capital","R$ 10,00"],["Área 02 — Ruínas da Construção","R$ 10,00"],["Área 03 — Ruínas do Edifício Gigante","R$ 10,00"],["Canteiro Definhado","R$ 15,00"],["Colheita Ardente","R$ 15,00"]]},
-{t:"Vazio Perdido",r:[["Extermínio (nível máximo)","R$ 15,00"],["Aniquilação dos Transgressores","R$ 5,00"],["Operação de Reconstituição","R$ 15,00"]]},
-{t:"Cuidado com a Conta",r:[["Pacote Semanal","R$ 15,00"],["Pacote por Versão","R$ 50,00"]]}
-]},
-hsr:{title:"Honkai: Star Rail",img:"https://webstatic.hoyoverse.com/upload/op-public/2023/09/14/3c862d085db721a5625b6e12649399bc_8067514115196038699.png",desc:"Serviços Premium de Honkai: Star Rail.",
-sections:[
-{t:"Stellar Jade",r:[["800 Stellar (5 giros)","R$ 8,00"],["1.600 Stellar (10 giros)","R$ 12,00"],["3.200 Stellar (20 giros)","R$ 24,00"],["4.800 Stellar (30 giros)","R$ 36,00"],["8.000 Stellar (50 giros)","R$ 48,00"]]},
-{t:"Cuidados",r:[["Cuidado mensal","R$ 15,00"],["Cuidado completo da versão","R$ 50,00"]]},
-{t:"End Games",r:[["MOC","R$ 20,00"],["Sombra AP","R$ 40,00"],["Pura Ficção","R$ 60,00"],["Arbitragem de Anomalias","R$ 100,00"]]},
-{t:"Exploração",r:[["Nave da Herta","R$ 10,00"],["Jarilo-VI","R$ 20,00"],["Xianzhou","R$ 35,00"],["Penacony","R$ 50,00"],["Amphoreus","R$ 45,00"]]},
-{t:"Coletas",r:[["Coleta de Pássaros de Origami","R$ 35,00"],["Coleta de Ninfas","R$ 5,00 / 10 ninfas"]]},
-{t:"Missões",r:[["Missão de Desbravamento (por ato)","R$ 10,00"],["Desbravamento (completo)","R$ 40,00"],["Missão de Companheiro","R$ 10,00"]]},
-{t:"Ascensão",r:[["Up de Personagem","R$ 10,00"],["Up de Rastro","R$ 15,00"],["Up de Cone de Luz","R$ 15,00"]]},
-{t:"Universo Simulado",r:[["Universo Simulado Inteiro (cada mundo)","R$ 50,00"],["Universo Simulado Semanal (cada mundo)","R$ 15,00"],["Universo do Enxame","R$ 35,00"],["Universo do Ouro e Engrenagem","R$ 35,00"],["Universo Domínio Incógnito","R$ 35,00"],["Universo Divergente (Amphoreus) Inteiro","R$ 25,00"],["Universo Divergente (Amphoreus) Semanal","R$ 15,00"],["Guerras Monetárias","R$ 20,00"]]}
-]},
-wuwa:{title:"Wuthering Waves",img:"https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/05/wuthering_waves_banner_schedule.jpg",desc:"Serviços Premium de Wuthering Waves.",
-sections:[
-{t:"Astrites",r:[["800 Astrites","R$ 6,00"],["1.600 Astrites","R$ 14,00"],["3.200 Astrites","R$ 24,00"],["4.800 Astrites","R$ 34,00"],["6.400 Astrites","R$ 44,00"],["8.000 Astrites","R$ 54,00"],["9.600 Astrites","R$ 64,00"]]},
-{t:"Exploração — Huanglong",r:[["Gorges of Spirits","R$ 27,00"],["Norfall Barrens","R$ 26,00"],["Whining Aix's Mire","R$ 28,00"],["Dim Forest","R$ 25,00"],["Port City of Guixu","R$ 24,00"],["Tiger's Maw","R$ 28,00"],["Wuming Bay","R$ 23,00"],["Jinzhou","R$ 30,00"],["Desorock Highland","R$ 19,00"],["Central Plains","R$ 24,00"],["Mt. Firmament","R$ 29,00"],["Huanglong 100%","R$ 228,00"]]},
-{t:"Exploração — Black Shores",r:[["Black Shores + Tethys' Deep","R$ 29,00"]]},
-{t:"Exploração — Rinascita",r:[["Ilha Principal","R$ 115,00"],["Beohr Waters","R$ 24,00"],["Avinoleum","R$ 26,00"],["Septimont","R$ 36,00"],["Fabricatorium of the Deep","R$ 14,00"],["Sanguis Plateaus","R$ 32,00"],["Rinascita 100%","R$ 250,00"]]},
-{t:"Exploração — Roya Frostlands",r:[["Etching Plains","R$ 26,00"],["Startorch Academy","R$ 24,00"],["Starward Riseway","R$ 23,00"],["Fangspire Chasm","R$ 25,00"],["Bjartr Woods","R$ 23,00"],["Stagnant Run","R$ 23,00"],["Rebirth Uplands","R$ 22,00"],["Mawburrow Desert","R$ 24,00"],["Giant's Gaze","R$ 23,00"],["Roya Frostlands 100%","R$ 186,00"]]},
-{t:"Tower of Adversity",r:[["Resonant","R$ 10,00"],["Hazard","R$ 16,00"],["Echoing","R$ 11,00"],["Tower of Adversity (completa)","R$ 30,00"],["Whimpering Wastes","R$ 21,00"],["Holograma (por dificuldade)","R$ 1,50"]]},
-{t:"Data Bank",r:[["Data Bank (nível 1–30)","R$ 58,00"],["Data Bank (por nível)","R$ 2,50"]]},
-{t:"Missões",r:[["Missão Principal","R$ 50,00 / região"],["Missão de Companheiro","R$ 13,00"],["Missões de Exploração","R$ 13,00"],["Missões Secundárias","R$ 9,00"]]},
-{t:"Up de Personagens",r:[["Nível 1 até 90","R$ 15,00"],["De 10 em 10 níveis","R$ 5,00"]]},
-{t:"Builds",r:[["Build Básica","R$ 10,00"],["Build Média","R$ 13,00"],["Build Excelente","R$ 20,00"]]}
-]}
-};
+/* ═══════════════════ PAGE LOADER ═══════════════════ */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('pageLoader').classList.add('hidden');
+    setTimeout(() => { document.getElementById('pageLoader').remove(); }, 600);
+    initScrollAnimations();
+  }, 1200);
+});
 
-function openProduct(key){
-  const d=produtos[key];if(!d)return;
-  document.getElementById('modalTitle').textContent=d.title;
-  const s=d.sections.map(sec=>`
+/* ═══════════════════ NAV SCROLL ═══════════════════ */
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('mainNav');
+  if (window.scrollY > 40) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+}, { passive: true });
+
+/* ═══════════════════ SCROLL ANIMATIONS ═══════════════════ */
+function initScrollAnimations() {
+  const els = document.querySelectorAll('.fade-in');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+}
+
+/* ═══════════════════ TOAST SYSTEM ═══════════════════ */
+function showToast(title, msg = '', type = 'info') {
+  const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-bolt' };
+  const stack = document.getElementById('toastStack');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `
+    <i class="toast-icon fas ${icons[type] || icons.info}"></i>
+    <div class="toast-body">
+      <div class="toast-title">${title}</div>
+      ${msg ? `<div class="toast-msg">${msg}</div>` : ''}
+    </div>
+    <button class="toast-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+  stack.appendChild(t);
+  requestAnimationFrame(() => { requestAnimationFrame(() => { t.classList.add('show'); }); });
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 4000);
+}
+
+/* ═══════════════════ MOBILE MENU ═══════════════════ */
+function openMob() {
+  document.getElementById('mobMenu').classList.add('open');
+  document.getElementById('mobOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMob() {
+  document.getElementById('mobMenu').classList.remove('open');
+  document.getElementById('mobOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ═══════════════════ COMMAND PALETTE ═══════════════════ */
+const cmdItems = [
+  { icon:'fa-clipboard', title:'Catálogo', sub:'Ver todos os serviços', href:'#catalog', section:'Navegação' },
+  { icon:'fa-check', title:'Abrir Ticket', sub:'Solicitar um serviço', href:'#ticket-section', section:'Navegação' },
+  { icon:'fa-ticket', title:'Meus Tickets', sub:'Acompanhar solicitações', href:'#ticket-tracker', section:'Navegação' },
+  { icon:'fa-star', title:'Avaliações', sub:'Ver feedbacks de clientes', href:'#reviews', section:'Navegação' },
+  { icon:'fa-users', title:'Equipe', sub:'Conhecer a equipe Nova', href:'#team', section:'Navegação' },
+  { icon:'fa-circle-dot', title:'Status', sub:'Status operacional', href:'#status', section:'Navegação' },
+  { icon:'fa-dove', title:'Genshin Impact', sub:'Ver preços', action:'genshin', section:'Serviços' },
+  { icon:'fa-robot', title:'Genshin — Script', sub:'Ver preços', action:'genshinsc', section:'Serviços' },
+  { icon:'fa-tv', title:'Zenless Zone Zero', sub:'Ver preços', action:'zzz', section:'Serviços' },
+  { icon:'fa-star', title:'Honkai: Star Rail', sub:'Ver preços', action:'hsr', section:'Serviços' },
+  { icon:'fa-water', title:'Wuthering Waves', sub:'Ver preços', action:'wuwa', section:'Serviços' },
+  { icon:'fa-brands fa-discord', title:'Discord', sub:'Entrar no servidor', href:'https://discord.gg/Szqbsd4TNa', external:true, section:'Links' },
+];
+
+let cmdActive = -1;
+let cmdFiltered = [];
+
+function cmdOpen() {
+  document.getElementById('cmdOverlay').classList.add('open');
+  document.getElementById('cmdInput').focus();
+  cmdFilter('');
+  document.body.style.overflow = 'hidden';
+}
+function cmdClose(e) {
+  if (e.target === document.getElementById('cmdOverlay')) {
+    document.getElementById('cmdOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+function closeCmdPalette() {
+  document.getElementById('cmdOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function cmdFilter(q) {
+  const qLower = q.toLowerCase();
+  cmdFiltered = q ? cmdItems.filter(i =>
+    i.title.toLowerCase().includes(qLower) || i.sub.toLowerCase().includes(qLower) || i.section.toLowerCase().includes(qLower)
+  ) : cmdItems;
+  cmdActive = -1;
+  renderCmdResults();
+}
+function renderCmdResults() {
+  const res = document.getElementById('cmdResults');
+  if (!cmdFiltered.length) {
+    res.innerHTML = `<div class="cmd-section-label">Nenhum resultado encontrado</div>`;
+    return;
+  }
+  const sections = [...new Set(cmdFiltered.map(i => i.section))];
+  res.innerHTML = sections.map(sec => `
+    <div class="cmd-section-label">${sec}</div>
+    ${cmdFiltered.filter(i => i.section === sec).map((item, idx) => {
+      const globalIdx = cmdFiltered.indexOf(item);
+      return `<div class="cmd-item${cmdActive === globalIdx ? ' active' : ''}" onclick="cmdExecute(${globalIdx})" onmouseover="cmdActive=${globalIdx};renderCmdResults()">
+        <i class="fas ${item.icon}"></i>
+        <div class="cmd-item-text">
+          <div class="cmd-item-title">${item.title}</div>
+          <div class="cmd-item-sub">${item.sub}</div>
+        </div>
+      </div>`;
+    }).join('')}
+  `).join('');
+}
+function cmdKey(e) {
+  if (e.key === 'Escape') { closeCmdPalette(); return; }
+  if (e.key === 'ArrowDown') { cmdActive = Math.min(cmdActive + 1, cmdFiltered.length - 1); renderCmdResults(); e.preventDefault(); }
+  if (e.key === 'ArrowUp') { cmdActive = Math.max(cmdActive - 1, 0); renderCmdResults(); e.preventDefault(); }
+  if (e.key === 'Enter' && cmdActive >= 0) { cmdExecute(cmdActive); }
+}
+function cmdExecute(idx) {
+  const item = cmdFiltered[idx];
+  if (!item) return;
+  closeCmdPalette();
+  document.getElementById('cmdInput').value = '';
+  if (item.action) { openProduct(item.action); }
+  else if (item.external) { window.open(item.href, '_blank'); }
+  else { document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' }); }
+}
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); cmdOpen(); }
+  if (e.key === 'Escape') {
+    closeCmdPalette();
+    closeModal();
+    closeTerms();
+  }
+});
+
+/* ═══════════════════ PRODUCT DATA ═══════════════════ */
+const produtos = {
+  genshin: {
+    title: "Genshin Impact — Manual",
+    img: "https://fastcdn.hoyoverse.com/content-v2/plat/162828/c50d8c6e2597e9f88a66e06c3c32c5c5_8400293576027107227.jpg",
+    desc: "Exploração, missões, ascensão, Abismo e muito mais. Serviço manual com máxima qualidade e segurança.",
+    tags: ['Exploração', 'Missões', 'End-game', 'Builds'],
+    sections: [
+        {t:"Tabela de Giros • Exploração Baixa",r:[["800 gemas (05 giros)","R$ 6,00"],["1.600 gemas (10 giros)","R$ 12,00"],["3.200 gemas (20 giros)","R$ 22,00"],["4.800 gemas (30 giros)","R$ 32,00"],["6.400 gemas (40 giros)","R$ 42,00"],["8.000 gemas (50 giros)","R$ 52,00"]]},
+        {t:"Tabela de Giros • Exploração Alta",r:[["800 gemas (05 giros)","R$ 7,50"],["1.600 gemas (10 giros)","R$ 15,00"],["3.200 gemas (20 giros)","R$ 25,00"],["4.800 gemas (30 giros)","R$ 35,00"],["6.400 gemas (40 giros)","R$ 45,00"],["8.000 gemas (50 giros)","R$ 55,00"]]},
+        {t:"Ascensão",r:[["Farm personagem lvl 20 → 90","R$ 12,00"],["Up de arma lvl 20 → 90","R$ 12,00"],["Talentos 1 → 10","R$ 14,00"],["Talentos 10/10/10","R$ 38,00"]]},
+        {t:"Builds",r:[["Básica","R$ 6,00"],["Ótima","R$ 12,00"],["Excelente","R$ 27,00"]]},
+        {t:"Combos",r:[["Combo Básico (Farm personagem lvl 20 → 90 e Up de arma lvl 20 → 90)","R$ 20,00"],["Combo Intermediário (Farm personagem lvl 20 → 90, Up de arma lvl 20 → 90 e 1 Talento 1 → 10)","R$ 34,00"],["Combo Completo (Farm personagem lvl 20 → 90, Up de arma lvl 20 → 90, Talentos 10/10/10 e Build excelente)","R$ 80,00"]]},
+        {t:"Abismo",r:[["Cada Piso","R$ 3,50"],["Piso 01–08","R$ 14,00"],["Lua Abissal","R$ 8,50"]]},
+        {t:"Confronto Abissal",r:[["Completo sem Penas","R$ 7,00"],["Completo com Penas","R$ 10,00"],["Completo com Armas 4★ / 5★","R$ 14,00"]]},
+        {t:"Teatro",r:[["Fácil","R$ 6,00"],["Médio","R$ 10,00"],["Difícil","R$ 14,00"],["Visionário","R$ 18,00"],["Lunar","R$ 22,00"]]},
+        {t:"Serviços Extras",r:[["200k de Moras","R$ 2,00"],["Arma de Pesca/Refino","R$ 7,00"],["Rastro Teatro","R$ 4,00"],["Farm 50 unid. (Alimentos / Flores / Madeira / Inimigos)","R$ 1,50 cada"]]},
+        {t:"Oculis",r:[["Anemoculus","R$ 16,00"],["Geoculus","R$ 28,00"],["Electroculus","R$ 32,00"],["Dendroculus (Floresta)","R$ 40,00"],["Dendroculus (Deserto)","R$ 40,00"],["Hydroculus","R$ 50,00"],["Pyroculus","R$ 60,00"],["Lunoculus","R$ 40,00"]]},
+        {t:"Itens de Coletas",r:[["Calcedônia Carmesim (Espinha do Dragão)","R$ 12,00"],["Carpa Espiritual (Vale Chenyu)","R$ 16,50"],["Espatos Lúmen (Despenhadeiro)","R$ 16,50"],["Pluma da Luz (Sumeru)","R$ 32,00"],["Padrões de Enkanomiya","R$ 28,00"],["Selos Sagrados (Sumeru)","R$ 25,00"]]},
+        {t:"Exploração 100% • Nações",r:[["Mondstadt","R$ 25,00"],["Liyue","R$ 35,00"],["Inazuma","R$ 45,00"],["Sumeru (Floresta)","R$ 50,00"],["Sumeru (Deserto)","R$ 50,00"],["Fontaine","R$ 60,00"],["Natlan","R$ 70,00"],["Nodkrai","R$ 60,00"]]},
+        {t:"Exploração 100% • Regiões",r:[["Templo do Espaço","R$ 20,00"],["Espinha do Dragão","R$ 25,00"],["Vale Chenyu","R$ 30,00"],["Despenhadeiro","R$ 20,00"],["Minas Subterrarias","R$ 15,00"],["Enkanomiya","R$ 25,00"],["Mar Antigo","R$ 30,00"],["Resort da Brisa","R$ 40,00"],["Montanha Sagrada","R$ 25,00"]]},
+        {t:"Eventos",r:[["Evento simples (eventos pequenos/secundários)","R$ 7,00"],["Evento principal (evento grande da versão)","R$ 12,00"]]},
+        {t:"TCG",r:[["Completo","R$ 35,00"],["Upar Nível","R$ 10,00"],["Pegar Cartas (personagens)","R$ 8,00"]]},
+        {t:"Bule de Relachá",r:[["Upar Nível","R$ 5,00"],["Completo","R$ 25,00"]]},
+        {t:"Repertório das Melodias",r:[["Upar Nível (cada música)","R$ 3,00"],["Upar Nível (cada pacote de música)","R$ 12,00"]]},
+        {t:"Cuidados com a Conta",r:[["1 semana","R$ 6,00"],["1 versão","R$ 35,00"]]},
+    ]
+  },
+  genshinsc: {
+    title: "Genshin Impact — Script",
+    img: "https://64.media.tumblr.com/823ffa8afa9ccbc228bc6d38eb74d40a/0d022b9dba521e03-1d/s540x810/5edb2371d50ba999879ebe9d2ec15e418302bd75.webp",
+    desc: "Mesma qualidade, preços mais acessíveis. Serviços automatizados com segurança e eficiência.",
+    tags: ['Script', 'Automatizado', 'Econômico'],
+    sections: [
+        {t:"Tabela de Giros • Exploração Baixa",r:[["800 gemas (05 giros)","R$ 5,00"],["1.600 gemas (10 giros)","R$ 8,00"],["3.200 gemas (20 giros)","R$ 17,00"],["4.800 gemas (30 giros)","R$ 27,00"],["6.400 gemas (40 giros)","R$ 37,00"],["8.000 gemas (50 giros)","R$ 47,00"]]},
+        {t:"Tabela de Giros • Exploração Alta",r:[["800 gemas (05 giros)","R$ 6,00"],["1.600 gemas (10 giros)","R$ 10,00"],["3.200 gemas (20 giros)","R$ 20,00"],["4.800 gemas (30 giros)","R$ 30,00"],["6.400 gemas (40 giros)","R$ 40,00"],["8.000 gemas (50 giros)","R$ 50,00"]]},
+        {t:"Ascensão",r:[["Farm personagem lvl 20 → 90","R$ 10,00"],["Up de arma lvl 20 → 90","R$ 10,00"],["Talentos 1 → 10","R$ 12,00"],["Talentos 10/10/10","R$ 30,00"]]},
+        {t:"Builds",r:[["Básica","R$ 5,00"],["Ótima","R$ 10,00"],["Excelente","R$ 25,00"]]},
+        {t:"Combos",r:[["Combo Básico (Farm personagem lvl 20 → 90 e Up de arma lvl 20 → 90)","R$ 18,00"],["Combo Intermediário (Farm personagem lvl 20 → 90, Up de arma lvl 20 → 90 e 1 Talento 1 → 10)","R$ 30,00"],["Combo Completo (Farm personagem lvl 20 → 90, Up de arma lvl 20 → 90, Talentos 10/10/10 e Build excelente)","R$ 60,00"]]},
+        {t:"Abismo",r:[["Cada Piso","R$ 2,00"],["Piso 01–08","R$ 10,00"],["Lua Abissal","R$ 7,00"]]},
+        {t:"Confronto Abissal",r:[["Completo sem Penas","R$ 5,00"],["Completo com Penas","R$ 8,00"],["Completo com Armas 4★ / 5★","R$ 10,00"]]},
+        {t:"Teatro",r:[["Fácil","R$ 4,00"],["Médio","R$ 8,00"],["Difícil","R$ 12,00"],["Visionário","R$ 16,00"],["Lunar","R$ 20,00"]]},
+        {t:"Serviços Extras",r:[["200k de Moras","R$ 1,00"],["Arma de Pesca/Refino","R$ 5,00"],["Rastro Teatro","R$ 3,00"],["Farm 50 unid. (Alimentos / Flores / Madeira / Inimigos)","R$ 1,00 cada"]]},
+        {t:"Oculis",r:[["Anemoculus","R$ 10,00"],["Geoculus","R$ 25,00"],["Electroculus","R$ 30,00"],["Dendroculus (Floresta)","R$ 35,00"],["Dendroculus (Deserto)","R$ 35,00"],["Hydroculus","R$ 45,00"],["Pyroculus","R$ 50,00"],["Lunoculus","R$ 35,00"]]},
+        {t:"Itens de Coletas",r:[["Calcedônia Carmesim (Espinha do Dragão)","R$ 10,00"],["Carpa Espiritual (Vale Chenyu)","R$ 15,00"],["Espatos Lúmen (Despenhadeiro)","R$ 15,00"],["Pluma da Luz (Sumeru)","R$ 30,00"],["Padrões de Enkanomiya","R$ 25,00"],["Selos Sagrados (Sumeru)","R$ 20,00"]]},
+        {t:"Exploração 100% • Nações",r:[["Mondstadt","R$ 20,00"],["Liyue","R$ 30,00"],["Inazuma","R$ 40,00"],["Sumeru (Floresta)","R$ 40,00"],["Sumeru (Deserto)","R$ 40,00"],["Fontaine","R$ 55,00"],["Natlan","R$ 65,00"],["Nodkrai","R$ 55,00"]]},
+        {t:"Exploração 100% • Regiões",r:[["Templo do Espaço","R$ 15,00"],["Espinha do Dragão","R$ 20,00"],["Vale Chenyu","R$ 25,00"],["Despenhadeiro","R$ 15,00"],["Minas Subterrarias","R$ 10,00"],["Enkanomiya","R$ 20,00"],["Mar Antigo","R$ 15,00"],["Resort da Brisa","R$ 35,00"],["Montanha Sagrada","R$ 20,00"]]},
+        {t:"Eventos",r:[["Evento simples (eventos pequenos/secundários)","R$ 5,00"],["Evento principal (evento grande da versão)","R$ 10,00"]]},
+        {t:"TCG",r:[["Completo","R$ 35,00"],["Upar Nível","R$ 10,00"],["Pegar Cartas (personagens)","R$ 8,00"]]},
+        {t:"Bule de Relachá",r:[["Upar Nível","R$ 5,00"],["Completo","R$ 25,00"]]},
+        {t:"Repertório das Melodias",r:[["Upar Nível (cada música)","R$ 3,00"],["Upar Nível (cada pacote de música)","R$ 12,00"]]},
+        {t:"Cuidados com a Conta",r:[["1 semana","R$ 4,00"],["1 versão","R$ 30,00"]]},
+]
+  },
+  zzz: {
+    title: "Zenless Zone Zero — Manual & Script",
+    img: "https://onpoplife.com.br/wp-content/uploads/2025/12/2.5-kv-capa.jpg",
+    desc: "Policromos, missões, end-game e cuidados com conta. Serviço premium no universo de New Eridu.",
+    tags: ['Policromos', 'End-game', 'Missões'],
+    sections: [
+        {t:"Policromos (Giros)",r:[["160 Policromos (1 Giro)","R$ 1,00"],["1.600 Policromos (10 Giros)","R$ 10,00"],["16.000 Policromos (100 Giros)","R$ 100,00"]]},
+        {t:"Missões",r:[["Missão Principal (Completa – 9 Capítulos)","R$ 70,00"],["Missão Principal (1 Capítulo)","R$ 10,00"],["Missão Secundária (Cada)","R$ 2,00"]]},
+        {t:"Eventos",r:[["Evento Simples (Pequenos/Secundários)","R$ 5,00"],["Evento Principal (Grande da Versão)","R$ 20,00"]]},
+        {t:"Agente",r:[["Todas as Histórias (18 no total)","R$ 70,00"],["História Individual (1)","R$ 5,00"]]},
+        {t:"Cuidados",r:[["Cuidado Mensal","R$ 20,00"],["Cuidado Completo da Versão","R$ 30,00"]]},
+        {t:"Miau (Oficial Miau-Miau)",r:[["Por Área","R$ 15,00"],["1 Página","R$ 6,00"]]},
+        {t:"Endgame",r:[["Nódulo Estável (Nível 1 ao 10)","R$ 15,00"],["Nódulo de Conflito (Nível 1 ao 8)","R$ 13,00"],["Nódulo Crítico (Nível 1 ao 7)","R$ 12,00"],["Investida Mortal","R$ 20,00"],["Teste de Combate Virtual (Por Nível)","R$ 2,00"],["Teste de Combate (Sem Saída – Por Nível)","R$ 3,00"]]},
+        {t:"Cidade Definhada (Cavidade Zero)",r:[["Área 01 – Metrô da Velha Capital","R$ 10,00"],["Área 02 – Ruínas da Construção","R$ 10,00"],["Área 03 – Ruínas do Edifício Gigante","R$ 10,00"],["Canteiro Definhado","R$ 15,00"],["Colheita Ardente","R$ 15,00"]]},
+        {t:"Vazio Perdido",r:[["Extermínio da Linha de Frente (Nível Máximo)","R$ 15,00"],["Aniquilação dos Transgressores (Todos os Níveis)","R$ 5,00"],["Operação de Reconstituição","R$ 15,00"]]},
+    ]
+  },
+  hsr: {
+    title: "Honkai: Star Rail — Manual & Script",
+    img: "https://webstatic.hoyoverse.com/upload/op-public/2023/09/14/3c862d085db721a5625b6e12649399bc_8067514115196038699.png",
+    desc: "Stellar Jade, end-game, exploração, universo simulado e muito mais. Qualidade garantida.",
+    tags: ['Stellar Jade', 'MOC', 'Universo Simulado'],
+    sections: [
+          {t:"Stellar Jade",r:[["160 Stellar (1 Giro)","R$ 1,00"],["1.600 Stellar (10 Giros)","R$ 10,00"],["16.000 Stellar (100 Giros)","R$ 100,00"]]},
+        {t:"Missões",r:[["Missão de Desbravamento (Por Ato)","R$ 10,00"],["Desbravamento (Completo)","R$ 40,00"],["Missão de Companheiro","R$ 10,00"]]},
+        {t:"Exploração",r:[["Nave da Herta","R$ 10,00"],["Jarilo-VI","R$ 20,00"],["Xianzhou","R$ 35,00"],["Penacony","R$ 50,00"],["Amphoreus","R$ 40,00"],["Planarcadia","R$ 30,00"]]},
+        {t:"EndGames",r:[["MoC (Memory of Chaos)","R$ 20,00"],["Sombra AP (Apocalyptic Shadow)","R$ 40,00"],["Pura Ficção","R$ 60,00"],["Arbitragem de Anomalias","R$ 100,00"]]},
+        {t:"Cuidado (Manutenção de Conta)",r:[["Cuidado Mensal","R$ 15,00"],["Cuidado Completo da Versão","R$ 40,00"]]},
+        {t:"Coletas",r:[["Coleta de Pássaros de Origami","R$ 35,00"],["Coleta de Ninfas","R$ 5,00 / 10 Ninfas"]]},
+        {t:"Ascensão",r:[["Up de Personagem","R$ 10,00"],["Up de Rastro","R$ 15,00"],["Up de Cone de Luz","R$ 15,00"]]},
+        {t:"Conteúdos (Universo Simulado e Outros)",r:[["Universo Simulado Inteiro (Cada Mundo)","R$ 50,00"],["Universo Simulado Semanal (Cada Mundo)","R$ 15,00"],["Universo do Enxame","R$ 35,00"],["Universo de Ouro e Engrenagem","R$ 35,00"],["Universo Domínio Incógnito","R$ 35,00"],["Universo Divergente (Planarcadia) Semanal","R$ 10,00"],["Guerras Monetárias","R$ 20,00"]]},
+    ]
+  },
+  wuwa: {
+    title: "Wuthering Waves — Manual",
+    img: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/05/wuthering_waves_banner_schedule.jpg",
+    desc: "Exploração completa, astrites, Tower of Adversity e builds otimizadas.",
+    tags: ['Exploração', 'Astrites', 'Tower of Adversity', 'Builds'],
+    sections: [
+        {t:"Astrites (Giros) • Exploração Baixa",r:[["160 Astrites (5 Giros)","R$ 5,00"],["1.600 Astrites (10 Giros)","R$ 10,00"],["3.200 Astrites (20 Giros)","R$ 20,00"],["4.800 Astrites (30 Giros)","R$ 30,00"],["6.400 Astrites (40 Giros)","R$ 40,00"],["8.000 Astrites (50 Giros)","R$ 50,00"],["16.000 Astrites (100 Giros)","R$ 100,00"]]},
+        {t:"Astrites (Giros) • Exploração Alta",r:[["160 Astrites (5 Giros)","R$ 7,00"],["1.600 Astrites (10 Giros)","R$ 14,00"],["3.200 Astrites (20 Giros)","R$ 24,00"],["4.800 Astrites (30 Giros)","R$ 34,00"],["6.400 Astrites (40 Giros)","R$ 44,00"],["8.000 Astrites (50 Giros)","R$ 54,00"],["16.000 Astrites (100 Giros)","R$ 104,00"]]},
+        {t:"Exploração 100% Huanglong",r:[["Gorges of Spirits","R$ 25,00"],["Norfal Barrens","R$ 25,00"],["Whining Aix's Mire","R$ 25,00"],["Dim Forest","R$ 25,00"],["Port City of Guixu","R$ 25,00"],["Tiger's Maw","R$ 25,00"],["Wuming Bay","R$ 25,00"],["Jinzhou","R$ 30,00"],["Desorock Highland","R$ 20,00"],["Central Plains","R$ 25,00"],["Mt. Firmament","R$ 30,00"]]},
+        {t:"Rinascita 100%",r:[["Ilha Principal","R$ 100,00"],["Beohr Waters","R$ 20,00"],["Avinoleum","R$ 20,00"],["Septimont","R$ 30,00"],["Fabricatorium of the Deep","R$ 10,00"],["Sanguis Plateaus","R$ 25,00"]]},
+        {t:"Black Shores",r:[["Black Shores Archipelago + Tethys' Deep","R$ 29,00"]]},
+        {t:"Roya Frostlands 100%",r:[["Etching Plains","R$ 25,00"],["Startorch Academy","R$ 25,00"],["Starward Riseway","R$ 25,00"],["Fangspire Chasm","R$ 25,00"],["Bjartr Woods","R$ 25,00"],["Stagnant Run","R$ 25,00"],["Rebirth Uplands","R$ 25,00"],["Mawburrow Desert","R$ 25,00"],["Giant's Gaze","R$ 20,00"]]},
+        {t:"End Game: Tower of Adversity",r:[["Resonant","R$ 10,00"],["Hazard","R$ 16,00"],["Echoing","R$ 11,00"],["Tower of Adversity (Completa)","R$ 30,00"],["Whimpering Wastes","R$ 21,00"],["Holograma (Phantom Pain / Synchronization / Impermanence)","R$ 1,50 por dificuldade"]]},
+        {t:"Missões",r:[["Missão Principal","R$ 50,00 por região"],["Missão de Companheiro","R$ 12,00"],["Missões de Exploração","R$ 12,00"],["Missões Secundárias","R$ 10,00"]]},
+        {t:"Up de Personagens (Levels)",r:[["Nível 1 até 90","R$ 15,00"],["Armas 1 até 90","R$ 15,00"],["Árvore da Habilidade","R$ 22,00"]]},
+        {t:"Data Bank",r:[["Data Bank (Nível 1 ao 30)","R$ 58,00"],["Data Bank (Por nível)","R$ 2,50"]]},
+        {t:"Build",r:[["Build Básica","R$ 10,00"],["Build Média","R$ 15,00"],["Build Excelente","R$ 20,00"]]},
+        {t:"Cuidados",r:[["Cuidado Mensal","R$ 20,00"],["Cuidado Completo da Versão","R$ 30,00"]]},
+        {t:"Eventos",r:[["Evento simples (eventos pequenos/secundários)","R$ 10,00"],["Evento principal (evento grande da versão)","R$ 25,00"]]},
+    ],
+  },
+  wuwasc: {
+    title: "Wuthering Waves — Script",
+    img: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/05/wuthering_waves_banner_schedule.jpg",
+    desc: "Exploração completa, astrites, Tower of Adversity e builds otimizadas.",
+    tags: ['Exploração', 'Astrites', 'Tower of Adversity', 'Builds'],
+    sections: [
+        {t:"Astrites (Giros) • Exploração Baixa",r:[["160 Astrites (5 Giros)","R$ 4,00"],["1.600 Astrites (10 Giros)","R$ 9,00"],["3.200 Astrites (20 Giros)","R$ 18,00"],["4.800 Astrites (30 Giros)","R$ 28,00"],["6.400 Astrites (40 Giros)","R$ 38,00"],["8.000 Astrites (50 Giros)","R$ 38,00"],["16.000 Astrites (100 Giros)","R$ 98,00"]]},
+        {t:"Astrites (Giros) • Exploração Alta",r:[["160 Astrites (5 Giros)","R$ 5,00"],["1.600 Astrites (10 Giros)","R$ 10,00"],["3.200 Astrites (20 Giros)","R$ 20,00"],["4.800 Astrites (30 Giros)","R$ 30,00"],["6.400 Astrites (40 Giros)","R$ 40,00"],["8.000 Astrites (50 Giros)","R$ 50,00"],["16.000 Astrites (100 Giros)","R$ 100,00"]]},
+        {t:"Exploração 100% Huanglong",r:[["Gorges of Spirits","R$ 22,00"],["Norfal Barrens","R$ 22,00"],["Whining Aix's Mire","R$ 22,00"],["Dim Forest","R$ 22,00"],["Port City of Guixu","R$ 22,00"],["Tiger's Maw","R$ 23,00"],["Wuming Bay","R$ 23,00"],["Jinzhou","R$ 25,00"],["Desorock Highland","R$ 18,00"],["Central Plains","R$ 23,00"],["Mt. Firmament","R$ 27,00"]]},
+        {t:"Rinascita 100%",r:[["Ilha Principal","R$ 92,00"],["Beohr Waters","R$ 15,00"],["Avinoleum","R$ 17,00"],["Septimont","R$ 27,00"],["Fabricatorium of the Deep","R$ 8,00"],["Sanguis Plateaus","R$ 20,00"]]},
+        {t:"Black Shores",r:[["Black Shores Archipelago + Tethys' Deep","R$ 24,00"]]},
+        {t:"Roya Frostlands 100%",r:[["Etching Plains","R$ 22,00"],["Startorch Academy","R$ 22,00"],["Starward Riseway","R$ 22,00"],["Fangspire Chasm","R$ 22,00"],["Bjartr Woods","R$ 22,00"],["Stagnant Run","R$ 22,00"],["Rebirth Uplands","R$ 22,00"],["Mawburrow Desert","R$ 22,00"],["Giant's Gaze","R$ 17,00"]]},
+        {t:"End Game: Tower of Adversity",r:[["Resonant","R$ 8,00"],["Hazard","R$ 13,00"],["Echoing","R$ 9,00"],["Tower of Adversity (Completa)","R$ 25,00"],["Whimpering Wastes","R$ 18,00"],["Holograma (Phantom Pain / Synchronization / Impermanence)","R$ 1,00 por dificuldade"]]},
+        {t:"Missões",r:[["Missão Principal","R$ 38,00 por região"],["Missão de Companheiro","R$ 9,00"],["Missões de Exploração","R$ 9,00"],["Missões Secundárias","R$ 8,00"]]},
+        {t:"Up de Personagens (Levels)",r:[["Nível 1 até 90","R$ 12,00"],["Armas 1 até 90","R$ 12,00"],["Árvore da Habilidade","R$ 18,00"]]},
+        {t:"Data Bank",r:[["Data Bank (Nível 1 ao 30)","R$ 50,00"],["Data Bank (Por nível)","R$ 2,00"]]},
+        {t:"Build",r:[["Build Básica","R$ 8,00"],["Build Média","R$ 17,00"],["Build Excelente","R$ 25,00"]]},
+        {t:"Cuidados",r:[["Cuidado Mensal","R$ 20,00"],["Cuidado Completo da Versão","R$ 30,00"]]},
+        {t:"Eventos",r:[["Evento simples (eventos pequenos/secundários)","R$ 8,00"],["Evento principal (evento grande da versão)","R$ 30,00"]]},
+    ]
+  }
+  };
+
+/* ═══════════════════ CATALOG RENDER ═══════════════════ */
+const catalogCards = [
+  { key:'genshin', game:'GI', status:'on', statusLabel:'Disponível', title:'Genshin Impact: Manual', desc:'Exploração, missões, ascensão, Abismo e muito mais. Catálogo completo.', price:'R$ 1,00', priceLabel:' / serviço', img:'https://fastcdn.hoyoverse.com/content-v2/plat/162828/c50d8c6e2597e9f88a66e06c3c32c5c5_8400293576027107227.jpg', tags:['Exploração','Missões','End-game'], featured:true },
+  { key:'genshinsc', game:'GI', status:'on', statusLabel:'Disponível', title:'Genshin Impact: Script', desc:'Mesma qualidade, preços mais acessíveis. Serviços automatizados com segurança.', price:'R$ 0,50', priceLabel:' / serviço', img:'https://64.media.tumblr.com/823ffa8afa9ccbc228bc6d38eb74d40a/0d022b9dba521e03-1d/s540x810/5edb2371d50ba999879ebe9d2ec15e418302bd75.webp', tags:['Script','Econômico'], featured:true },
+  { key:'zzz', game:'ZZZ', status:'on', statusLabel:'Disponível', title:'Zenless Zone Zero: Manual & Script', desc:'Policromos, missões, end-game e cuidados com conta. Serviço premium.', price:'R$ 2,00', priceLabel:' / serviço', img:'https://onpoplife.com.br/wp-content/uploads/2025/12/2.5-kv-capa.jpg', tags:['End-game','Missões'], featured:false },
+  { key:'hsr', game:'HSR', status:'on', statusLabel:'Disponível', title:'Honkai: Star Rail: Manual & Script', desc:'Stellar Jade, end-game, exploração, universo simulado e muito mais.', price:'R$ 5,00', priceLabel:' / serviço', img:'https://webstatic.hoyoverse.com/upload/op-public/2023/09/14/3c862d085db721a5625b6e12649399bc_8067514115196038699.png', tags:['Stellar Jade','MOC'], featured:false },
+  { key:'wuwa', game:'WUWA', status:'on', statusLabel:'Disponível', title:'Wuthering Waves: Manual', desc:'Exploração completa, astrites, Tower of Adversity e builds otimizadas.', price:'R$ 1,50', priceLabel:' / serviço', img:'https://static0.gamerantimages.com/wordpress/wp-content/uploads/2024/05/wuthering_waves_banner_schedule.jpg', tags:['Exploração','Astrites'], featured:false },
+  { key:'wuwasc', game:'WUWA', status:'on', statusLabel:'Disponível', title:'Wuthering Waves: Script', desc:'Exploração completa, astrites, Tower of Adversity e builds otimizadas.', price:'R$ 1,50', priceLabel:' / serviço', img:'https://i.redd.it/9okwb2m6s4of1.jpeg', tags:['Exploração','Astrites'], featured:false },
+  { key:null, game:'AE', status:'soon', statusLabel:'Em Breve', title:'Arknights: Endfield: Manual & Script', desc:'Serviços premium em desenvolvimento. Em breve disponível.', price:'—', priceLabel:'', img:'https://endfield.wiki.gg/images/Arknights_Endfield_Cover_Art.png', tags:['Em Breve'], locked:true, featured:false },
+  { key:null, game:'NTE', status:'soon', statusLabel:'Em Breve', title:'Neverness to Everness: Manual', desc:'Serviços premium em desenvolvimento. Em breve disponível.', price:'—', priceLabel:'', img:'https://nte.perfectworld.com/public/images/share_en.jpg', tags:['Em Breve'], locked:true, featured:false },
+  { key:null, game:'NTE', status:'soon', statusLabel:'Em Breve', title:'Neverness to Everness: Script', desc:'Serviços premium em desenvolvimento. Em breve disponível.', price:'—', priceLabel:'', img:'https://image.api.playstation.com/vulcan/ap/rnd/202508/1211/a168cf24533349e7630ef6b504e30303dc8ae4e3f7ebaba8.jpg', tags:['Em Breve'], locked:true, featured:false },
+];
+
+function renderCatalog() {
+  const grid = document.getElementById('catalogGrid');
+  grid.innerHTML = catalogCards.map(c => `
+    <div class="c-card fade-in ${c.locked ? 'locked' : ''}" ${c.key ? `onclick="openProduct('${c.key}')"` : ''}>
+      ${c.featured ? '<div class="c-featured-badge">Destaque</div>' : ''}
+      <div class="c-img">
+        <img src="${c.img}" alt="${c.title}" loading="lazy">
+        <div class="c-img-overlay"></div>
+      </div>
+      <div class="c-body">
+        <div class="c-tag-row">
+          <span class="c-game-tag">${c.game}</span>
+          <span class="c-status ${c.status}">${c.statusLabel}</span>
+        </div>
+        <div class="c-title">${c.title}</div>
+        <div class="c-desc">${c.desc}</div>
+        <div class="c-tags">${c.tags.map(t => `<span class="c-tag">${t}</span>`).join('')}</div>
+        <div class="c-footer">
+          <div class="c-price">${c.price} <small>${c.priceLabel}</small></div>
+          ${c.locked ? '<span class="btn-locked">Bloqueado</span>' : '<button class="btn-view">Ver Preços</button>'}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════ REVIEWS DATA ═══════════════════ */
+const reviews = [
+  { stars:5, text:'É a terceira vez que eu compro na loja,o serviço é MUITO rápido,os vendedores sempre são educados,vou comprar mais vezes!, obrigada pelo trabalho de vocês !!', name:'𓈒 ୭ৎ nm :: nina', game:'Genshin Impact', verified:true, avatar:null },
+  { stars:5, text:'Cara. Eu falei “sem pressa” Terminou em menos de um dia. ABSOLUTAMENTE incrivel, trabalho excelente! Ainda ganhei do sorteio', name:'Anna', game:'Genshin Impact', verified:true, avatar:null },
+  { stars:5, text:'o serviço foi finalizado em menos de dois dias, foram muito prestativos e atenciosos pra cada detalhe. Nota 10 :33', name:'ajaxmaxxing', game:'Honkai: Star Rail', verified:true, avatar:null },
+  { stars:5, text:'O serviço foi concluído rapidamente e entregue no mesmo dia, feito pelo Foxy !', name:'owner.venti', game:'Genshin Impact', verified:true, avatar:null },
+  { stars:5, text:'Fizeram meu MOC no honkai, minha situação estava meio chata rsrs, amo demais a loja! feito pela duda!', name:'Queijo ralado 🧀', game:'Honkai: Star Rail', verified:true, avatar:null },
+];
+
+function renderReviews() {
+  const grid = document.getElementById('reviewsGrid');
+  grid.innerHTML = reviews.map(r => `
+    <div class="review-card fade-in">
+      <div class="review-stars">${'<span class="star">★</span>'.repeat(r.stars)}</div>
+      <div class="review-text">"${r.text}"</div>
+      <div class="review-author">
+        <div class="review-avatar">${r.name[0].toUpperCase()}</div>
+        <div>
+          <div class="review-name">${r.name}</div>
+          <div class="review-game">${r.game}</div>
+        </div>
+        ${r.verified ? '<div class="review-badge">Verificado</div>' : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════ PRODUCT MODAL ═══════════════════ */
+function openProduct(key) {
+  const d = produtos[key];
+  if (!d) return;
+  document.getElementById('modalTitle').textContent = d.title;
+  const sections = d.sections.map(sec => `
     <div class="price-section">
       <div class="price-section-title">${sec.t}</div>
       <div class="price-table">
-        ${sec.r.map(r=>`<div class="p-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}
+        ${sec.r.map(r => `<div class="p-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}
       </div>
-    </div>`).join('');
-  document.getElementById('modalBody').innerHTML=`
-    <img src="${d.img}" class="pmodal-img" alt="">
+    </div>
+  `).join('');
+  const tags = d.tags ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.2rem;">${d.tags.map(t=>`<span class="c-tag">${t}</span>`).join('')}</div>` : '';
+  document.getElementById('modalBody').innerHTML = `
+    <img src="${d.img}" class="pmodal-img" alt="${d.title}">
     <div class="pmodal-body">
       <p class="pmodal-desc">${d.desc}</p>
-      ${s}
+      ${tags}
+      ${sections}
+      <div class="pmodal-cta">
+        <a href="#ticket-section" class="cta-primary" onclick="closeModal()">Solicitar Serviço →</a>
+        <a href="https://discord.gg/Szqbsd4TNa" class="cta-ghost" target="_blank" rel="noopener">Discord ↗</a>
+      </div>
     </div>`;
   document.getElementById('productModal').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 }
-
-function closeModal(){
+function closeModal() {
   document.getElementById('productModal').classList.remove('open');
-  document.body.style.overflow='';
+  document.body.style.overflow = '';
 }
-
-document.getElementById('productModal').addEventListener('click',function(e){
-  if(e.target===this) closeModal();
+document.getElementById('productModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
 });
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();document.getElementById('termsModal').classList.remove('open');}});
-
-function openTerms(){
+/* ═══════════════════ TERMS MODAL ═══════════════════ */
+function openTerms() {
   document.getElementById('termsModal').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 }
-document.getElementById('termsModal').addEventListener('click',function(e){
-  if(e.target===this){this.classList.remove('open');document.body.style.overflow='';}
+function closeTerms() {
+  document.getElementById('termsModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('termsModal').addEventListener('click', function(e) {
+  if (e.target === this) closeTerms();
 });
 
-function openMob(){document.getElementById('mobMenu').classList.add('open');document.getElementById('mobOverlay').classList.add('open');}
-function closeMob(){document.getElementById('mobMenu').classList.remove('open');document.getElementById('mobOverlay').classList.remove('open');}
-
-function showToast(msg,ok=false){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast'+(ok?' ok':'');
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3200);
+/* ═══════════════════ PRIORITY ═══════════════════ */
+let selectedPriority = 'low';
+function setPriority(p, el) {
+  selectedPriority = p;
+  document.querySelectorAll('.priority-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
 }
 
+/* ═══════════════════ CHAR COUNTER ═══════════════════ */
+function updateCharCount(el) {
+  const counter = document.getElementById('charCounter');
+  if (counter) counter.textContent = `${el.value.length} / 800`;
+}
+
+/* ═══════════════════ TICKET SUBMIT ═══════════════════ */
 const sessionTickets = [];
 
-function renderTickets(filter=''){
-  const list=document.getElementById('tickets-list');
-  const empty=document.getElementById('tracker-empty');
-  const filtered=filter
-    ?sessionTickets.filter(t=>t.id.toLowerCase().includes(filter.toLowerCase())||t.name.toLowerCase().includes(filter.toLowerCase()))
-    :sessionTickets;
-  if(filtered.length===0){
-    empty.style.display='block';
-    list.querySelectorAll('.ticket-entry').forEach(e=>e.remove());
+function submitTicket() {
+  const name = document.getElementById('f-name').value.trim();
+  const game = document.getElementById('f-game').value;
+  const service = document.getElementById('f-service').value.trim();
+  const terms = document.getElementById('f-terms').checked;
+  const msg = document.getElementById('form-msg');
+
+  msg.className = 'form-msg';
+  msg.style.display = 'none';
+
+  if (!name || !game || !service) {
+    msg.textContent = 'Preencha os campos obrigatórios: Nome, Jogo e Serviço.';
+    msg.className = 'form-msg error';
+    showToast('Campos obrigatórios', 'Preencha nome, jogo e serviço.', 'error');
     return;
   }
-  empty.style.display='none';
-  list.querySelectorAll('.ticket-entry').forEach(e=>e.remove());
-  filtered.forEach(t=>{
-    const el=document.createElement('div');
-    el.className='ticket-entry';
-    const statusClass=t.status==='Em Andamento'?'badge-progress':t.status==='Concluído'?'badge-done':'badge-pending';
-    el.innerHTML=`
+  if (!terms) {
+    msg.textContent = 'Você precisa aceitar os Termos de Compra.';
+    msg.className = 'form-msg error';
+    showToast('Termos não aceitos', 'Leia e aceite os termos para continuar.', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('btnTicket');
+  const indicator = document.getElementById('typingIndicator');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  indicator.classList.add('show');
+
+  setTimeout(() => {
+    const id = 'NV-' + Date.now().toString(36).toUpperCase().slice(-6);
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit' }) + ' ' + now.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+    sessionTickets.unshift({ id, name, game, service, status:'Aguardando', date:dateStr, priority: selectedPriority });
+    renderTickets();
+
+    msg.innerHTML = `Ticket <strong>${id}</strong> registrado! Nossa equipe responde em até 48h.`;
+    msg.className = 'form-msg success';
+    btn.textContent = 'Enviar Solicitação →';
+    btn.disabled = false;
+    indicator.classList.remove('show');
+
+    ['f-name','f-service','f-details','f-contact'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-game').value = '';
+    document.getElementById('f-terms').checked = false;
+    updateCharCount({ value:'' });
+
+    showToast('Ticket Criado!', `ID: ${id} — aguarde nossa resposta.`, 'success');
+
+    document.querySelector('#ticket-tracker')?.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 1400);
+}
+
+/* ═══════════════════ TICKET TRACKER ═══════════════════ */
+let currentFilter = 'all';
+let searchQuery = '';
+
+function filterTickets(filter, el) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderTickets();
+}
+
+function searchTickets(q) {
+  searchQuery = q.toLowerCase();
+  renderTickets();
+}
+
+function renderTickets() {
+  const list = document.getElementById('tickets-list');
+  const empty = document.getElementById('tracker-empty');
+
+  let filtered = sessionTickets;
+  if (currentFilter !== 'all') filtered = filtered.filter(t => t.status === currentFilter);
+  if (searchQuery) filtered = filtered.filter(t =>
+    t.id.toLowerCase().includes(searchQuery) ||
+    t.name.toLowerCase().includes(searchQuery) ||
+    t.game.toLowerCase().includes(searchQuery)
+  );
+
+  list.querySelectorAll('.ticket-entry').forEach(e => e.remove());
+
+  if (!filtered.length) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  filtered.forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'ticket-entry';
+    const statusClass = t.status === 'Em Andamento' ? 'badge-progress' : t.status === 'Concluído' ? 'badge-done' : 'badge-pending';
+    el.innerHTML = `
+      <div class="ticket-priority-dot ${t.priority || 'low'}"></div>
       <div class="ticket-id">${t.id}</div>
       <div class="ticket-game">${t.game}</div>
       <div class="ticket-service">${t.service}</div>
@@ -1111,51 +2006,9 @@ function renderTickets(filter=''){
   });
 }
 
-function filterTickets(){
-  const v=document.getElementById('tracker-input').value.trim();
-  renderTickets(v);
-}
-
-function submitTicket(){
-  const name=document.getElementById('f-name').value.trim();
-  const game=document.getElementById('f-game').value;
-  const service=document.getElementById('f-service').value.trim();
-  const terms=document.getElementById('f-terms').checked;
-  const msg=document.getElementById('form-msg');
-  msg.className='form-msg';msg.style.display='none';
-
-  if(!name||!game||!service){
-    msg.textContent='Preencha os campos obrigatórios: Nome, Jogo e Serviço.';
-    msg.className='form-msg error';
-    return;
-  }
-  if(!terms){
-    msg.textContent='Você precisa aceitar os Termos de Compra.';
-    msg.className='form-msg error';
-    return;
-  }
-
-  const btn=document.querySelector('.btn-ticket');
-  btn.textContent='Enviando...';btn.disabled=true;
-
-  setTimeout(()=>{
-    const id='NV-'+Date.now().toString(36).toUpperCase().slice(-6);
-    const now=new Date();
-    const dateStr=now.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+' '+now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-    sessionTickets.unshift({id,name,game,service,status:'Aguardando',date:dateStr});
-    renderTickets();
-    msg.innerHTML=`Ticket <strong>${id}</strong> registrado! Nossa equipe responde em até 48h. Acompanhe abaixo.`;
-    msg.className='form-msg success';
-    btn.textContent='Enviar Solicitação →';btn.disabled=false;
-    document.getElementById('f-name').value='';
-    document.getElementById('f-game').value='';
-    document.getElementById('f-service').value='';
-    document.getElementById('f-details').value='';
-    document.getElementById('f-contact').value='';
-    document.getElementById('f-terms').checked=false;
-    showToast('Ticket '+id+' enviado!',true);
-  },1200);
-}
+/* ═══════════════════ INIT ═══════════════════ */
+renderCatalog();
+renderReviews();
 </script>
 </body>
 </html>
